@@ -1,0 +1,15 @@
+body {
+    min-height: 100vh;
+}
+
+.card-shadow {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+table td, table th {
+    vertical-align: middle;
+}
+
+.status-badge {
+    font-size: 0.9rem;
+}
