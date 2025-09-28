@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>User Management Portal</h1>
+        <p>
+          Register as a front-end user or, if you are an administrator, manage
+          both front-end and back-end accounts.
+        </p>
+      </header>
+
+      <section class="card" id="registration-card">
+        <h2>Front-end User Registration</h2>
+        <form id="registration-form">
+          <div class="field">
+            <label for="reg-name">Full name</label>
+            <input id="reg-name" name="name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="reg-email">Email</label>
+            <input id="reg-email" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="reg-password">Password</label>
+            <input id="reg-password" name="password" type="password" required />
+          </div>
+          <button type="submit">Register</button>
+        </form>
+        <p class="status" id="registration-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="card" id="admin-card">
+        <h2>Administrator Tools</h2>
+        <form id="admin-form">
+          <div class="field">
+            <label for="admin-token">Admin token</label>
+            <input
+              id="admin-token"
+              name="token"
+              type="password"
+              required
+              placeholder="Enter admin token"
+            />
+          </div>
+          <div class="field">
+            <label for="admin-name">Full name</label>
+            <input id="admin-name" name="name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="admin-email">Email</label>
+            <input id="admin-email" name="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="admin-password">Temporary password</label>
+            <input id="admin-password" name="password" type="text" required />
+          </div>
+          <div class="field">
+            <label for="admin-role">Role</label>
+            <select id="admin-role" name="role" required>
+              <option value="">Select a role</option>
+              <option value="frontend">Front-end user</option>
+              <option value="backend">Back-end user</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          <button type="submit">Add user</button>
+        </form>
+        <p class="status" id="admin-status" role="status" aria-live="polite"></p>
+
+        <div class="user-list">
+          <div class="user-list__header">
+            <h3>Existing users</h3>
+            <button id="refresh-users" type="button">Refresh</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th>Created by</th>
+              </tr>
+            </thead>
+            <tbody id="user-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="app.js" defer></script>
+  </body>
+</html>
