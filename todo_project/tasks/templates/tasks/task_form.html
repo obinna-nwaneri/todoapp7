@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{% if is_edit %}Edit Task{% else %}Add Task{% endif %} | To-Do App{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-4 text-center">{% if is_edit %}Edit Task{% else %}Add Task{% endif %}</h1>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.user_id }}
+          <div class="mb-3">
+            <label class="form-label" for="id_title">Task Title</label>
+            {{ form.title }}
+            {% for error in form.title.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="id_description">Task Description</label>
+            {{ form.description }}
+            {% for error in form.description.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="id_due_date">Due Date</label>
+            {{ form.due_date }}
+            {% for error in form.due_date.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="id_priority">Priority</label>
+              {{ form.priority }}
+              {% for error in form.priority.errors %}
+              <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="id_status">Status</label>
+              {{ form.status }}
+              {% for error in form.status.errors %}
+              <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+          </div>
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>
+          {% endif %}
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <a class="btn btn-outline-secondary" href="{% url 'tasks:dashboard' %}">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
