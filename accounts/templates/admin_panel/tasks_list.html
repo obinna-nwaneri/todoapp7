@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Manage Tasks{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0">All Tasks</h1>
+        <p class="text-muted mb-0">Review and update tasks across the platform.</p>
+    </div>
+</div>
+<form class="row g-2 mb-3" method="get">
+    <div class="col-md-3">
+        <label class="form-label" for="filter-owner">Owner</label>
+        <select name="owner" id="filter-owner" class="form-select">
+            <option value="">All</option>
+            {% for owner in owners %}
+            <option value="{{ owner.id }}" {% if current_owner|add:'' == owner.id|add:'' %}selected{% endif %}>{{ owner.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="filter-status">Status</label>
+        <select name="status" id="filter-status" class="form-select">
+            <option value="">All</option>
+            <option value="pending" {% if current_status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="in_progress" {% if current_status == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if current_status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="filter-priority">Priority</label>
+        <select name="priority" id="filter-priority" class="form-select">
+            <option value="">All</option>
+            <option value="low" {% if current_priority == 'low' %}selected{% endif %}>Low</option>
+            <option value="medium" {% if current_priority == 'medium' %}selected{% endif %}>Medium</option>
+            <option value="high" {% if current_priority == 'high' %}selected{% endif %}>High</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="filter-q">Search</label>
+        <div class="input-group">
+            <input type="search" id="filter-q" name="q" value="{{ query }}" class="form-control" placeholder="Title or description">
+            <button class="btn btn-outline-secondary" type="submit">Go</button>
+        </div>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Owner</th>
+                <th>Due</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in page_obj %}
+            <tr>
+                <td>
+                    <form method="post" class="row g-2 align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <div class="col-12">
+                            <input type="text" name="title" class="form-control" value="{{ task.title }}" required>
+                        </div>
+                        <div class="col-12">
+                            <textarea name="description" class="form-control" rows="2">{{ task.description }}</textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" name="due_date" class="form-control" value="{{ task.due_date|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-3">
+                            <select name="priority" class="form-select">
+                                <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select">
+                                <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="owner" class="form-select">
+                                {% for owner in owners %}
+                                <option value="{{ owner.id }}" {% if task.owner_id == owner.id %}selected{% endif %}>{{ owner.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-sm btn-primary" type="submit">Save</button>
+                            <button class="btn btn-sm btn-outline-danger" name="action" value="delete" onclick="return confirm('Delete this task?');">Delete</button>
+                        </div>
+                    </form>
+                </td>
+                <td>{{ task.owner.username }}</td>
+                <td>{{ task.due_date|date:'Y-m-d'|default:'-' }}</td>
+                <td class="text-capitalize">{{ task.get_priority_display }}</td>
+                <td class="text-capitalize">{{ task.get_status_display }}</td>
+                <td>{{ task.created_at|date:'Y-m-d H:i' }}</td>
+                <td class="text-end">
+                    <span class="badge bg-light text-dark">ID {{ task.id }}</span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-muted py-4">No tasks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<nav class="mt-3">
+    <ul class="pagination justify-content-end">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&owner={{ current_owner|urlencode }}&status={{ current_status|urlencode }}&priority={{ current_priority|urlencode }}&q={{ query|urlencode }}">Previous</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&owner={{ current_owner|urlencode }}&status={{ current_status|urlencode }}&priority={{ current_priority|urlencode }}&q={{ query|urlencode }}">Next</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
