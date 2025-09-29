@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}All Tasks - Todo Manager{% endblock %}
+{% block content %}
+<section class="admin-section">
+    <h1>All Tasks</h1>
+    <form method="get" class="filter-form">
+        <label>Owner
+            <select name="owner">
+                <option value="">All</option>
+                {% for user in users %}
+                    {% with user_id=user.id|stringformat:'s' %}
+                        <option value="{{ user.id }}" {% if filters.owner == user_id %}selected{% endif %}>{{ user.username }}</option>
+                    {% endwith %}
+                {% endfor %}
+            </select>
+        </label>
+        <label>Status
+            <select name="status">
+                <option value="">All</option>
+                <option value="pending" {% if filters.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="in_progress" {% if filters.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="completed" {% if filters.status == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </label>
+        <label>Priority
+            <select name="priority">
+                <option value="">All</option>
+                <option value="low" {% if filters.priority == 'low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if filters.priority == 'medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if filters.priority == 'high' %}selected{% endif %}>High</option>
+            </select>
+        </label>
+        <label>Due before
+            <input type="date" name="due_before" value="{{ filters.due_before }}">
+        </label>
+        <button type="submit" class="btn">Filter</button>
+    </form>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Owner</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td><input type="text" name="title" form="task-form-{{ task.id }}" value="{{ task.title }}" required></td>
+                        <td><textarea name="description" form="task-form-{{ task.id }}" rows="2">{{ task.description }}</textarea></td>
+                        <td>
+                            <select name="owner" form="task-form-{{ task.id }}">
+                                {% for user in users %}
+                                    <option value="{{ user.id }}" {% if user.id == task.owner_id %}selected{% endif %}>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="date" name="due_date" form="task-form-{{ task.id }}" value="{{ task.due_date|date:'Y-m-d' }}"></td>
+                        <td>
+                            <select name="priority" form="task-form-{{ task.id }}">
+                                <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="status" form="task-form-{{ task.id }}">
+                                <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                        </td>
+                        <td class="table-actions">
+                            <button type="submit" class="btn small primary" form="task-form-{{ task.id }}" name="action" value="update">Save</button>
+                            <button type="submit" class="btn small danger" form="task-form-{{ task.id }}" name="action" value="delete" data-confirm="Delete this task?">Delete</button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No tasks found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% for task in tasks %}
+        <form id="task-form-{{ task.id }}" method="post" class="sr-only">
+            {% csrf_token %}
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+        </form>
+    {% endfor %}
+</section>
+{% endblock %}
