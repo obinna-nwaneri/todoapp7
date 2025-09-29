@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}My Tasks - Todo Manager{% endblock %}
+{% block content %}
+<section class="dashboard">
+    <div class="section-header">
+        <h1>My Tasks</h1>
+        <a class="btn primary" href="{% url 'tasks:task_add' %}">Add Task</a>
+    </div>
+    <form method="get" class="filter-form" id="task-filter-form">
+        <label>Status
+            <select name="status">
+                <option value="">All</option>
+                <option value="pending" {% if filters.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="in_progress" {% if filters.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="completed" {% if filters.status == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </label>
+        <label>Priority
+            <select name="priority">
+                <option value="">All</option>
+                <option value="low" {% if filters.priority == 'low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if filters.priority == 'medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if filters.priority == 'high' %}selected{% endif %}>High</option>
+            </select>
+        </label>
+        <label>Search
+            <input type="search" name="q" placeholder="Search title" value="{{ filters.q }}">
+        </label>
+        <button type="submit" class="btn">Apply</button>
+    </form>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.due_date|date:'Y-m-d'|default:'-' }}</td>
+                        <td class="priority {{ task.priority }}">{{ task.get_priority_display }}</td>
+                        <td>{{ task.get_status_display }}</td>
+                        <td class="table-actions">
+                            <a class="btn small" href="{% url 'tasks:task_edit' task.pk %}">Edit</a>
+                            <a class="btn danger small" href="{% url 'tasks:task_delete' task.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No tasks found. Create one to get started!</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Login - Todo Manager{% endblock %}
+{% block content %}
+<section class="auth-card">
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            <label for="id_username">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="id_password">Password</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn primary">Sign In</button>
+    </form>
+    <p class="auth-switch">Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a>.</p>
+</section>
+{% endblock %}
