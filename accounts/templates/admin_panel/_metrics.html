@@ -1,0 +1,48 @@
+<div class="row g-3" id="metrics" data-pending="{{ pending }}" data-in-progress="{{ in_progress }}" data-completed="{{ completed }}" x-data="metricCards({
+        userCount: {{ user_count }},
+        taskCount: {{ task_count }},
+        pending: {{ pending }},
+        inProgress: {{ in_progress }},
+        completed: {{ completed }}
+    })">
+    <div class="col-md-3 col-sm-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <span class="display-6" x-text="counters.userCount"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Tasks</h5>
+                <span class="display-6" x-text="counters.taskCount"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card shadow-sm h-100 border-start border-4 border-warning">
+            <div class="card-body">
+                <h6 class="card-title">Pending</h6>
+                <span class="h3" x-text="counters.pending"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card shadow-sm h-100 border-start border-4 border-info">
+            <div class="card-body">
+                <h6 class="card-title">In Progress</h6>
+                <span class="h3" x-text="counters.inProgress"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="card shadow-sm h-100 border-start border-4 border-success">
+            <div class="card-body">
+                <h6 class="card-title">Completed</h6>
+                <span class="h3" x-text="counters.completed"></span>
+            </div>
+        </div>
+    </div>
+</div>

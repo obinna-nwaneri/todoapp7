@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}My Tasks{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0">My Tasks</h1>
+        <p class="text-muted mb-0">Organize your work and keep track of progress.</p>
+    </div>
+    <a href="{% url 'tasks:task_add' %}" class="btn btn-primary">Add Task</a>
+</div>
+<form id="filters" class="row g-2 mb-3" hx-get="{% url 'tasks:tasks_table_partial' %}" hx-target="#task-table" hx-push-url="true">
+    <div class="col-md-3">
+        <label class="form-label" for="filter-status">Status</label>
+        <select name="status" id="filter-status" class="form-select">
+            <option value="">All</option>
+            <option value="pending" {% if status_value == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="in_progress" {% if status_value == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if status_value == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="filter-priority">Priority</label>
+        <select name="priority" id="filter-priority" class="form-select">
+            <option value="">All</option>
+            <option value="low" {% if priority_value == 'low' %}selected{% endif %}>Low</option>
+            <option value="medium" {% if priority_value == 'medium' %}selected{% endif %}>Medium</option>
+            <option value="high" {% if priority_value == 'high' %}selected{% endif %}>High</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="filter-search">Search</label>
+        <input type="search" name="q" id="filter-search" value="{{ query_value }}" class="form-control" placeholder="Search tasks...">
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-outline-secondary w-100" type="submit">Apply</button>
+    </div>
+</form>
+<div id="task-table">
+    {% include 'tasks/_table.html' %}
+</div>
+{% endblock %}
