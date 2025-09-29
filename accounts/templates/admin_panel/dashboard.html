@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/admin.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Admin Dashboard</h1>
+        <p class="text-muted mb-0">Monitor platform metrics and recent activity.</p>
+    </div>
+</div>
+<div id="metrics" hx-get="{% url 'admin_metrics_partial' %}" hx-trigger="load, every 10s" hx-swap="outerHTML"></div>
+<section class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h5 mb-0">Activity Feed</h2>
+        <small class="text-muted">Updates automatically every 15 seconds</small>
+    </div>
+    <div id="activity" hx-get="{% url 'admin_activity_partial' %}" hx-trigger="load, revealed, every 15s" hx-swap="innerHTML"></div>
+</section>
+<canvas id="task-status-chart" class="mt-5 w-100" height="200" style="max-width: 100%;"></canvas>
+{% endblock %}

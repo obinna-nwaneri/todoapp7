@@ -1,0 +1,51 @@
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Due</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in page_obj %}
+            <tr>
+                <td>
+                    <strong>{{ task.title }}</strong>
+                    {% if task.description %}
+                    <p class="mb-0 text-muted small">{{ task.description }}</p>
+                    {% endif %}
+                </td>
+                <td>{{ task.due_date|date:'Y-m-d'|default:'-' }}</td>
+                <td class="text-capitalize">{{ task.priority }}</td>
+                <td class="text-capitalize">{{ task.status|replace:'_',' ' }}</td>
+                <td class="text-end">
+                    <a href="{% url 'tasks:task_edit' task.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a href="{% url 'tasks:task_delete' task.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">No tasks match your filters.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<nav>
+    <ul class="pagination justify-content-end">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" hx-get="{% url 'tasks:tasks_table_partial' %}?page={{ page_obj.previous_page_number }}&status={{ status_value|urlencode }}&priority={{ priority_value|urlencode }}&q={{ query_value|urlencode }}" hx-target="#task-table" hx-push-url="true">Previous</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" hx-get="{% url 'tasks:tasks_table_partial' %}?page={{ page_obj.next_page_number }}&status={{ status_value|urlencode }}&priority={{ priority_value|urlencode }}&q={{ query_value|urlencode }}" hx-target="#task-table" hx-push-url="true">Next</a></li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
