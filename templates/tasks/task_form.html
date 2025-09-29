@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{% if task %}Edit {{ task.title }}{% else %}Create Task{% endif %} | Todo App Today{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <h1 class="text-3xl font-semibold text-slate-900">{% if task %}Edit task{% else %}Create a new task{% endif %}</h1>
+    <p class="mt-2 text-sm text-slate-600">Provide the details below to {% if task %}update{% else %}create{% endif %} your task.</p>
+    {% include "tasks/_task_form.html" with form=form task=task submit_label=task|yesno:"Update task,Create task" %}
+</div>
+{% endblock %}

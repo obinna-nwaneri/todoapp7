@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Your Tasks | Todo App Today{% endblock %}
+
+{% block content %}
+<div class="space-y-8" x-data="{filtersOpen: false}">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-900">Your tasks</h1>
+            <p class="mt-1 text-sm text-slate-600">Filter, sort, and update your work without leaving the page.</p>
+        </div>
+        <button type="button" class="inline-flex items-center gap-2 rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 sm:hidden" @click="filtersOpen = !filtersOpen">
+            <span x-show="!filtersOpen">Show filters</span>
+            <span x-show="filtersOpen">Hide filters</span>
+        </button>
+    </div>
+
+    <form method="get" class="grid gap-4 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200 sm:grid-cols-6" :class="{'hidden': !filtersOpen && window.innerWidth < 640}">
+        <div class="sm:col-span-2">
+            <label for="q" class="block text-sm font-medium text-slate-700">Search</label>
+            <input type="search" name="q" id="q" value="{{ filters.q }}" placeholder="Search tasks" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+        </div>
+        <div>
+            <label for="status" class="block text-sm font-medium text-slate-700">Status</label>
+            <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="">All</option>
+                {% for key, label in task.STATUS_CHOICES %}
+                    <option value="{{ key }}" {% if filters.status == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="priority" class="block text-sm font-medium text-slate-700">Priority</label>
+            <select name="priority" id="priority" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="">All</option>
+                {% for key, label in task.PRIORITY_CHOICES %}
+                    <option value="{{ key }}" {% if filters.priority == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="due" class="block text-sm font-medium text-slate-700">Due</label>
+            <select name="due" id="due" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="all" {% if filters.due == 'all' %}selected{% endif %}>Any time</option>
+                <option value="today" {% if filters.due == 'today' %}selected{% endif %}>Today</option>
+                <option value="week" {% if filters.due == 'week' %}selected{% endif %}>This week</option>
+                <option value="overdue" {% if filters.due == 'overdue' %}selected{% endif %}>Overdue</option>
+            </select>
+        </div>
+        <div>
+            <label for="sort" class="block text-sm font-medium text-slate-700">Sort by</label>
+            <select name="sort" id="sort" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="created_at" {% if filters.sort == 'created_at' %}selected{% endif %}>Created</option>
+                <option value="due_date" {% if filters.sort == 'due_date' %}selected{% endif %}>Due date</option>
+                <option value="priority" {% if filters.sort == 'priority' %}selected{% endif %}>Priority</option>
+                <option value="status" {% if filters.sort == 'status' %}selected{% endif %}>Status</option>
+            </select>
+        </div>
+        <div>
+            <label for="direction" class="block text-sm font-medium text-slate-700">Direction</label>
+            <select name="direction" id="direction" class="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="desc" {% if filters.direction == 'desc' %}selected{% endif %}>Descending</option>
+                <option value="asc" {% if filters.direction == 'asc' %}selected{% endif %}>Ascending</option>
+            </select>
+        </div>
+        <div class="sm:col-span-6 flex items-center justify-end gap-3">
+            <a href="{% url 'tasks:list' %}" class="text-sm font-medium text-slate-500 hover:text-indigo-600">Reset</a>
+            <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">Apply</button>
+        </div>
+    </form>
+
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <h2 class="text-lg font-semibold text-slate-900">Quick add</h2>
+        <p class="mt-1 text-sm text-slate-600">Capture a new task without leaving the page.</p>
+        <form hx-post="{% url 'tasks:create' %}" hx-target="#task-list-items" hx-swap="afterbegin" hx-on::after-request="if(event.detail.successful) this.reset();" class="mt-4 space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="id_title" class="block text-sm font-medium text-slate-700">Title</label>
+                {{ form.title }}
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label for="id_due_date" class="block text-sm font-medium text-slate-700">Due date</label>
+                    {{ form.due_date }}
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label for="id_priority" class="block text-sm font-medium text-slate-700">Priority</label>
+                        {{ form.priority }}
+                    </div>
+                    <div>
+                        <label for="id_status" class="block text-sm font-medium text-slate-700">Status</label>
+                        {{ form.status }}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="id_description" class="block text-sm font-medium text-slate-700">Description</label>
+                {{ form.description }}
+            </div>
+            <div class="flex items-center justify-end">
+                <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">Add task</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="task-list-wrapper" class="space-y-4" hx-target="this" hx-swap="outerHTML">
+        <div id="task-list-items" class="space-y-4">
+            {% if tasks %}
+                {% for task in tasks %}
+                    {% include "tasks/_task_row.html" %}
+                {% endfor %}
+            {% else %}
+                <div class="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-slate-500">
+                    No tasks match your filters yet. Create one above to get started.
+                </div>
+            {% endif %}
+        </div>
+        {% if is_paginated %}
+            <div class="flex items-center justify-between rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
+                <div class="text-sm text-slate-600">
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                </div>
+                <div class="flex items-center gap-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}" class="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:text-indigo-600">Previous</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}" class="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-600 hover:text-indigo-600">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

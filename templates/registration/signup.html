@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Register | Todo App Today{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-md rounded-xl bg-white p-6 shadow-sm">
+    <h1 class="text-2xl font-semibold text-slate-900">Create an account</h1>
+    <p class="mt-1 text-sm text-slate-600">Sign up to start capturing your tasks.</p>
+    <form method="post" class="mt-6 space-y-4" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-slate-700">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ field.errors|join:" " }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="rounded-md border border-red-300 bg-red-100 px-4 py-3 text-sm text-red-700">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        <button type="submit" class="w-full rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">Create account</button>
+    </form>
+    <p class="mt-4 text-sm text-slate-600">Already have an account? <a href="{% url 'accounts:login' %}" class="text-indigo-600 hover:text-indigo-500">Sign in</a>.</p>
+</div>
+{% endblock %}

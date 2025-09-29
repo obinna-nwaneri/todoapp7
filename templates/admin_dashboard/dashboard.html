@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | Todo App Today{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-900">Operations overview</h1>
+            <p class="mt-1 text-sm text-slate-600">Track user growth, task activity, and recent actions.</p>
+        </div>
+        <a href="{% url 'admin:index' %}" class="inline-flex items-center justify-center rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600">Open Django admin</a>
+    </div>
+
+    <section id="kpi-panel" class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200" hx-get="{{ kpi_url }}" hx-trigger="load, tasksChanged from:body" hx-target="this"></section>
+
+    <div class="grid gap-6 lg:grid-cols-2">
+        <section id="recent-activity" class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200" hx-get="{{ recent_url }}" hx-trigger="load, tasksChanged from:body" hx-target="this"></section>
+        <section id="users-table" class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200" hx-get="{{ users_url }}" hx-trigger="load, tasksChanged from:body" hx-target="this"></section>
+    </div>
+</div>
+{% endblock %}

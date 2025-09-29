@@ -1,0 +1,46 @@
+{% load humanize %}
+<div id="task-{{ task.id }}" class="task-row overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200 transition hover:shadow-md" data-task-id="{{ task.id }}">
+    <div class="flex flex-col gap-4 p-4 md:grid md:grid-cols-[2fr,1fr,1fr,1fr,auto] md:items-center">
+        <div>
+            <a href="{% url 'tasks:detail' task.pk %}" class="text-lg font-semibold text-slate-900 hover:text-indigo-600">{{ task.title }}</a>
+            {% if task.description %}
+                <p class="mt-1 text-sm text-slate-600">{{ task.description }}</p>
+            {% endif %}
+            <p class="mt-2 text-xs uppercase tracking-wide text-slate-400">Created {{ task.created_at|naturaltime }}</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase {% if task.priority == 'high' %}bg-red-100 text-red-700{% elif task.priority == 'medium' %}bg-amber-100 text-amber-700{% else %}bg-emerald-100 text-emerald-700{% endif %}">Priority: {{ task.get_priority_display }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase {% if task.status == 'completed' %}bg-emerald-100 text-emerald-700{% elif task.status == 'in_progress' %}bg-indigo-100 text-indigo-700{% else %}bg-slate-100 text-slate-700{% endif %}">Status: {{ task.get_status_display }}</span>
+        </div>
+        <div class="text-sm font-medium text-slate-700">
+            {% if task.due_date %}
+                Due {{ task.due_date|date:"M j, Y" }}
+            {% else %}
+                <span class="text-slate-400">No due date</span>
+            {% endif %}
+        </div>
+        <div class="flex flex-wrap items-center justify-end gap-2">
+            <button type="button" class="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-indigo-300 hover:text-indigo-600"
+                hx-post="{% url 'tasks:toggle-status' task.pk %}"
+                hx-target="#task-{{ task.id }}"
+                hx-swap="outerHTML">
+                Toggle
+            </button>
+            <button type="button" class="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-indigo-300 hover:text-indigo-600"
+                hx-get="{% url 'tasks:edit' task.pk %}"
+                hx-target="#task-{{ task.id }}"
+                hx-swap="outerHTML">
+                Edit
+            </button>
+            <a href="{% url 'tasks:detail' task.pk %}" class="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:border-indigo-300 hover:text-indigo-600">View</a>
+            <button type="button" class="rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
+                hx-get="{% url 'tasks:delete' task.pk %}"
+                hx-target="#task-{{ task.id }}"
+                hx-swap="outerHTML">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
