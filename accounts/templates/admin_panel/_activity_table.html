@@ -1,0 +1,78 @@
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form class="row g-2 align-items-end mb-3" hx-get="{% url 'admin_activity_partial' %}" hx-target="#activity" hx-trigger="change delay:200ms, submit">
+            <div class="col-md-3">
+                <label class="form-label" for="activity-action">Action</label>
+                <select name="action" id="activity-action" class="form-select">
+                    <option value="">All</option>
+                    {% for value, label in actions %}
+                    <option value="{{ value }}" {% if current_action == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="activity-user">User</label>
+                <select name="user" id="activity-user" class="form-select">
+                    <option value="">All</option>
+                    {% for u in users %}
+                    <option value="{{ u.id }}" {% if current_user|add:'' == u.id|add:'' %}selected{% endif %}>{{ u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="activity-query">Search</label>
+                <input type="search" name="q" id="activity-query" value="{{ query }}" class="form-control" placeholder="Search meta or entity">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-outline-secondary w-100" type="submit">Filter</button>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Entity</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in page_obj %}
+                    <tr>
+                        <td>{{ log.created_at|date:'Y-m-d H:i' }}</td>
+                        <td>{% if log.user %}{{ log.user.username }}{% else %}System{% endif %}</td>
+                        <td class="text-capitalize">{{ log.action|replace:'_',' ' }}</td>
+                        <td>{{ log.entity }}</td>
+                        <td><small class="text-muted">{{ log.meta|default:'-' }}</small></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No activity found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <nav>
+            <ul class="pagination justify-content-end">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" hx-get="{% url 'admin_activity_partial' %}?page={{ page_obj.previous_page_number }}&action={{ current_action }}&user={{ current_user }}&q={{ query }}" hx-target="#activity" hx-push-url="false">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" hx-get="{% url 'admin_activity_partial' %}?page={{ page_obj.next_page_number }}&action={{ current_action }}&user={{ current_user }}&q={{ query }}" hx-target="#activity" hx-push-url="false">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
