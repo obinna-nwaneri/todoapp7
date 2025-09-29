@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ task.title }} | Todo App Today{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl space-y-6">
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div>
+                <h1 class="text-3xl font-semibold text-slate-900">{{ task.title }}</h1>
+                <p class="mt-2 text-sm text-slate-600">Created {{ task.created_at|date:"M j, Y H:i" }} · Last updated {{ task.updated_at|date:"M j, Y H:i" }}</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase {% if task.priority == 'high' %}bg-red-100 text-red-700{% elif task.priority == 'medium' %}bg-amber-100 text-amber-700{% else %}bg-emerald-100 text-emerald-700{% endif %}">Priority: {{ task.get_priority_display }}</span>
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase {% if task.status == 'completed' %}bg-emerald-100 text-emerald-700{% elif task.status == 'in_progress' %}bg-indigo-100 text-indigo-700{% else %}bg-slate-100 text-slate-700{% endif %}">Status: {{ task.get_status_display }}</span>
+            </div>
+        </div>
+        <div class="mt-6 space-y-4">
+            <div>
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Description</h2>
+                <p class="mt-2 text-base text-slate-700">{{ task.description|default:"No description provided." }}</p>
+            </div>
+            <div>
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Due date</h2>
+                <p class="mt-2 text-base text-slate-700">
+                    {% if task.due_date %}
+                        {{ task.due_date|date:"l, M j, Y" }}
+                    {% else %}
+                        No due date
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="{% url 'tasks:list' %}" class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600">Back to list</a>
+            <a href="{% url 'tasks:edit' task.pk %}" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Edit task</a>
+            <form action="{% url 'tasks:toggle-status' task.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600">Toggle status</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

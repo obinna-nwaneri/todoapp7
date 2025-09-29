@@ -1,0 +1,46 @@
+<h2 class="text-xl font-semibold text-slate-900">Key metrics</h2>
+<p class="mt-1 text-sm text-slate-600">Snapshot of overall activity across the platform.</p>
+<div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div class="rounded-lg bg-slate-50 p-4">
+        <p class="text-sm text-slate-500">Total users</p>
+        <p class="mt-2 text-3xl font-semibold text-slate-900">{{ total_users }}</p>
+    </div>
+    <div class="rounded-lg bg-slate-50 p-4">
+        <p class="text-sm text-slate-500">Total tasks</p>
+        <p class="mt-2 text-3xl font-semibold text-slate-900">{{ total_tasks }}</p>
+    </div>
+</div>
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+    <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Tasks by status</h3>
+        <div class="mt-4 space-y-3">
+            {% for stat in status_stats %}
+                <div>
+                    <div class="flex items-center justify-between text-sm font-medium text-slate-600">
+                        <span>{{ stat.label }}</span>
+                        <span>{{ stat.count }}</span>
+                    </div>
+                    <div class="mt-1 h-2 rounded-full bg-slate-200">
+                        <div class="h-2 rounded-full bg-indigo-500" style="width: {% if total_tasks %}{% widthratio stat.count total_tasks 100 %}%{% else %}0%{% endif %}"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Tasks by priority</h3>
+        <div class="mt-4 space-y-3">
+            {% for stat in priority_stats %}
+                <div>
+                    <div class="flex items-center justify-between text-sm font-medium text-slate-600">
+                        <span>{{ stat.label }}</span>
+                        <span>{{ stat.count }}</span>
+                    </div>
+                    <div class="mt-1 h-2 rounded-full bg-slate-200">
+                        <div class="h-2 rounded-full bg-emerald-500" style="width: {% if total_tasks %}{% widthratio stat.count total_tasks 100 %}%{% else %}0%{% endif %}"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

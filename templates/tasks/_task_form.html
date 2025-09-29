@@ -1,0 +1,33 @@
+<form method="post" class="space-y-4" hx-boost="false">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-slate-700">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <p class="mt-1 text-xs text-slate-500">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ field.errors|join:" " }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% if form.non_field_errors %}
+        <div class="rounded-md border border-red-300 bg-red-100 px-4 py-3 text-sm text-red-700">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+    <div class="flex items-center justify-end gap-2">
+        <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">{{ submit_label|default:"Save" }}</button>
+        {% if task %}
+            <button type="button" class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600"
+                hx-get="{% url 'tasks:detail' task.pk %}"
+                hx-target="#task-{{ task.id }}"
+                hx-swap="outerHTML">
+                Cancel
+            </button>
+        {% else %}
+            <button type="reset" class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600">Reset</button>
+        {% endif %}
+    </div>
+</form>

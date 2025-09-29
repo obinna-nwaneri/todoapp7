@@ -1,0 +1,27 @@
+<h2 class="text-xl font-semibold text-slate-900">Recent activity</h2>
+<p class="mt-1 text-sm text-slate-600">Last 15 events across the platform.</p>
+<ul class="mt-6 space-y-4">
+    {% for log in logs %}
+        <li class="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+            <div class="flex items-center justify-between text-sm text-slate-600">
+                <span>
+                    {% if log.actor %}
+                        <span class="font-medium text-slate-900">{{ log.actor.username }}</span>
+                    {% else %}
+                        <span class="italic text-slate-500">System</span>
+                    {% endif %}
+                    {{ log.get_action_display|lower }}
+                    {% if log.task %}
+                        <span class="font-medium text-slate-900">{{ log.task.title }}</span>
+                    {% endif %}
+                </span>
+                <time class="text-xs uppercase tracking-wide text-slate-400">{{ log.created_at|date:"M j, Y H:i" }}</time>
+            </div>
+            {% if log.extra %}
+                <p class="mt-2 text-xs text-slate-500">{{ log.extra }}</p>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="rounded-lg border border-dashed border-slate-300 bg-white px-4 py-6 text-center text-sm text-slate-500">No activity yet.</li>
+    {% endfor %}
+</ul>
