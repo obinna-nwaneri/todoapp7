@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Reschedule Appointment | MedBook{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-semibold mb-4">Reschedule appointment</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Select new slot</label>
+            {{ form.slot.as_widget(attrs={"class": "mt-1 w-full border border-gray-300 rounded px-3 py-2"}) }}
+            {% for error in form.slot.errors %}
+                <p class="text-sm text-red-500">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded">Update</button>
+    </form>
+</div>
+{% endblock %}

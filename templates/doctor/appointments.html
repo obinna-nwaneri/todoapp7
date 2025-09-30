@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Doctor Appointments | MedBook{% endblock %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+    <h1 class="text-3xl font-bold text-gray-900">Patient appointments</h1>
+</div>
+<form method="get" class="bg-white p-4 rounded shadow mb-4 grid md:grid-cols-4 gap-4" hx-get="{% url 'doctor_appointments' %}" hx-target="#doctor-appointments-list" hx-trigger="change, submit" hx-include="this" hx-indicator=".loading-indicator">
+    <select name="status" class="border border-gray-300 rounded px-3 py-2">
+        <option value="">All statuses</option>
+        {% for value,label in status_choices %}
+            <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <input type="date" name="date_from" value="{{ request.GET.date_from }}" class="border border-gray-300 rounded px-3 py-2">
+    <input type="date" name="date_to" value="{{ request.GET.date_to }}" class="border border-gray-300 rounded px-3 py-2">
+    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Apply</button>
+</form>
+<div id="doctor-appointments-list" class="space-y-3" hx-trigger="refreshDoctorList from:body" hx-get="{% url 'doctor_appointments' %}" hx-target="#doctor-appointments-list" hx-swap="innerHTML">
+    {% include "doctor/_appt_rows.html" %}
+</div>
+<div id="modal"></div>
+<div class="loading-indicator">Loading...</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" x-data="{open:true}" x-show="open" x-transition>
+    <div class="bg-white rounded shadow-lg w-full max-w-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Reschedule appointment</h2>
+        <form hx-post="{% url 'appointment_reschedule' appointment.pk %}" hx-target="#appointment-{{ appointment.pk }}" hx-swap="outerHTML" hx-indicator=".loading-indicator" hx-on::after-request="document.getElementById('modal').innerHTML=''">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <label class="block text-sm font-medium text-gray-700">Select new slot</label>
+                {{ form.slot.as_widget(attrs={"class": "w-full border border-gray-300 rounded px-3 py-2"}) }}
+                {% for error in form.slot.errors %}
+                    <p class="text-sm text-red-500">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" class="px-4 py-2 border rounded" @click="open=false; document.getElementById('modal').innerHTML='';">Close</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

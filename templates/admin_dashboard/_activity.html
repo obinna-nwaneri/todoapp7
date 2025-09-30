@@ -1,0 +1,13 @@
+{% load humanize %}
+<h2 class="text-lg font-semibold text-gray-900 mb-3">Recent activity</h2>
+<ul class="space-y-2 text-sm text-gray-700">
+    {% for entry in recent_activity %}
+        <li>
+            {% if entry.actor %}<span class="font-medium">{{ entry.actor.get_full_name|default:entry.actor.username }}</span>{% else %}<span class="font-medium text-gray-500">System</span>{% endif %}
+            <span class="text-gray-500">{{ entry.action }}</span>
+            <span class="text-xs text-gray-400">{{ entry.created_at|naturaltime }}</span>
+        </li>
+    {% empty %}
+        <li>No activity logged yet.</li>
+    {% endfor %}
+</ul>

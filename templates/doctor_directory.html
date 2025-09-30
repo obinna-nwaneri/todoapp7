@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Find Doctors | MedBook{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-900 mb-6">Find a Doctor</h1>
+<form method="get" class="bg-white p-4 rounded shadow mb-6 grid md:grid-cols-5 gap-4">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search by name" class="border border-gray-300 rounded px-3 py-2" />
+    <select name="specialty" class="border border-gray-300 rounded px-3 py-2">
+        <option value="">Specialty</option>
+        {% for specialty in specialties %}
+            <option value="{{ specialty.slug }}" {% if request.GET.specialty == specialty.slug %}selected{% endif %}>{{ specialty.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="location" value="{{ request.GET.location }}" placeholder="City or State" class="border border-gray-300 rounded px-3 py-2" />
+    <select name="weekday" class="border border-gray-300 rounded px-3 py-2">
+        <option value="">Any day</option>
+        {% for value,label in weekdays %}
+            <option value="{{ value }}" {% if request.GET.weekday == value|stringformat:'s' %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <label class="inline-flex items-center space-x-2 text-sm text-gray-600">
+        <input type="checkbox" name="next_available" value="1" {% if request.GET.next_available %}checked{% endif %}>
+        <span>Only show next available</span>
+    </label>
+    <button type="submit" class="md:col-span-5 bg-indigo-600 text-white px-4 py-2 rounded">Filter</button>
+</form>
+<div class="grid md:grid-cols-3 gap-6">
+    {% for doctor in doctors %}
+        <div class="bg-white p-6 rounded shadow flex flex-col">
+            <h2 class="text-xl font-semibold text-gray-900">Dr. {{ doctor.user.get_full_name|default:doctor.user.username }}</h2>
+            <p class="text-sm text-gray-600">{{ doctor.specialty.name }}</p>
+            {% if doctor.clinic %}
+                <p class="text-sm text-gray-500">{{ doctor.clinic.name }} • {{ doctor.clinic.city }}, {{ doctor.clinic.state }}</p>
+            {% endif %}
+            <div class="mt-4 text-sm text-gray-500">
+                <p>Consultation fee: ₦{{ doctor.fee }}</p>
+            </div>
+            <a href="/doctors/{{ doctor.user.username }}/" class="mt-auto inline-block text-indigo-600 text-sm">View profile & slots →</a>
+        </div>
+    {% empty %}
+        <p class="text-gray-600">No doctors match your search. Try adjusting the filters.</p>
+    {% endfor %}
+</div>
+<div class="mt-6">
+    {% if is_paginated %}
+        <div class="flex space-x-2">
+            {% with request.GET.urlencode as query %}
+            {% if page_obj.has_previous %}
+                <a href='?{% if query %}{{ query }}&{% endif %}page={{ page_obj.previous_page_number }}' class='px-3 py-1 bg-white border rounded'>Previous</a>
+            {% endif %}
+            <span class='px-3 py-1 bg-indigo-600 text-white rounded'>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href='?{% if query %}{{ query }}&{% endif %}page={{ page_obj.next_page_number }}' class='px-3 py-1 bg-white border rounded'>Next</a>
+            {% endif %}
+            {% endwith %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

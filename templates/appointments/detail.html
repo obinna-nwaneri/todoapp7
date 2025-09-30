@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Appointment Details | MedBook{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-semibold mb-4">Appointment details</h1>
+    <dl class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+        <div>
+            <dt class="font-medium text-gray-900">Doctor</dt>
+            <dd>Dr. {{ appointment.doctor.get_full_name|default:appointment.doctor.username }}</dd>
+        </div>
+        <div>
+            <dt class="font-medium text-gray-900">Patient</dt>
+            <dd>{{ appointment.patient.get_full_name|default:appointment.patient.username }}</dd>
+        </div>
+        <div>
+            <dt class="font-medium text-gray-900">When</dt>
+            <dd>{{ appointment.start|date:"D, M j, Y" }} at {{ appointment.start|time:"g:i A" }}</dd>
+        </div>
+        <div>
+            <dt class="font-medium text-gray-900">Status</dt>
+            <dd class="capitalize">{{ appointment.status }}</dd>
+        </div>
+        {% if appointment.reason %}
+        <div class="md:col-span-2">
+            <dt class="font-medium text-gray-900">Reason</dt>
+            <dd>{{ appointment.reason }}</dd>
+        </div>
+        {% endif %}
+        {% if appointment.notes %}
+        <div class="md:col-span-2">
+            <dt class="font-medium text-gray-900">Doctor notes</dt>
+            <dd>{{ appointment.notes }}</dd>
+        </div>
+        {% endif %}
+    </dl>
+    <div class="mt-6 flex gap-3">
+        {% if user == appointment.patient %}
+            <a href="{% url 'my_appointments' %}" class="px-4 py-2 border rounded">Back to list</a>
+        {% elif user == appointment.doctor %}
+            <a href="{% url 'doctor_appointments' %}" class="px-4 py-2 border rounded">Back to doctor view</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

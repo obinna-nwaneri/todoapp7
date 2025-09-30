@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | MedBook{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-900 mb-6">Operations dashboard</h1>
+<div class="grid md:grid-cols-3 gap-6 mb-6" hx-get="{% url 'admin_dashboard_kpis' %}" hx-trigger="load, every 30s" hx-target="#kpis" hx-swap="outerHTML">
+    {% include "admin_dashboard/_kpis.html" %}
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+    <div id="today" class="bg-white p-6 rounded shadow" hx-get="{% url 'admin_dashboard_today' %}" hx-trigger="load, every 30s" hx-target="#today" hx-swap="outerHTML">
+        {% include "admin_dashboard/_today.html" %}
+    </div>
+    <div id="activity" class="bg-white p-6 rounded shadow" hx-get="{% url 'admin_dashboard_activity' %}" hx-trigger="load, every 30s" hx-target="#activity" hx-swap="outerHTML">
+        {% include "admin_dashboard/_activity.html" %}
+    </div>
+</div>
+<div class="mt-6 text-sm">
+    <a href="/django-admin/" class="text-indigo-600">Go to Django admin</a>
+</div>
+{% endblock %}

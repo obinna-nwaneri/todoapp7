@@ -1,0 +1,13 @@
+<div>
+    <label class="block text-sm font-medium text-gray-700">Available slots</label>
+    {{ form.slot.as_widget(attrs={"class": "mt-1 w-full border border-gray-300 rounded px-3 py-2"}) }}
+    {% if form.slot.help_text %}
+        <p class="text-xs text-gray-500">{{ form.slot.help_text }}</p>
+    {% endif %}
+    {% for error in form.slot.errors %}
+        <p class="text-sm text-red-500">{{ error }}</p>
+    {% endfor %}
+    {% if not form.slot.field.choices %}
+        <p class="text-sm text-gray-500 mt-2">Select a doctor and date to view available slots.</p>
+    {% endif %}
+</div>
