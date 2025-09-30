@@ -31,13 +31,13 @@ pip install -r requirements.txt
 ### 2. Apply database migrations
 
 ```bash
-python manage.py migrate
+python3 manage.py migrate
 ```
 
 ### 3. Create a superuser
 
 ```bash
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 ```
 
 ### 4. Seed reference data (optional but recommended)
@@ -45,7 +45,7 @@ python manage.py createsuperuser
 Populate the database with demo specialties, clinics, users, availability, and appointments:
 
 ```bash
-python manage.py seed_sample_data
+python3 manage.py seed_sample_data
 ```
 
 The command is idempotent—run it anytime to refresh the demo content.
@@ -63,7 +63,7 @@ The command is idempotent—run it anytime to refresh the demo content.
 ### 5. Run the development server
 
 ```bash
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 Visit <http://127.0.0.1:8000/> for the landing page.
@@ -81,7 +81,7 @@ Console email notifications appear in the terminal running the server.
 Run the automated suite:
 
 ```bash
-python manage.py test
+python3 manage.py test
 ```
 
 ## Notes
