@@ -42,46 +42,23 @@ python manage.py createsuperuser
 
 ### 4. Seed reference data (optional but recommended)
 
-Run the Django shell to create a specialty, clinic, and demo doctor with availability:
+Populate the database with demo specialties, clinics, users, availability, and appointments:
 
 ```bash
-python manage.py shell
+python manage.py seed_sample_data
 ```
 
-```python
-from django.contrib.auth import get_user_model
-from appointments.models import Clinic, DoctorProfile, Specialty, WeeklyAvailability
-from datetime import time
-from django.utils import timezone
+The command is idempotent—run it anytime to refresh the demo content.
 
-User = get_user_model()
-specialty, _ = Specialty.objects.get_or_create(name="General Practice")
-clinic, _ = Clinic.objects.get_or_create(
-    name="MedBook Clinic",
-    address="123 Health Way",
-    city="Lagos",
-    state="Lagos",
-    phone="0800-000-0000",
-)
-doctor_user = User.objects.create_user("doctor", password="doctorpass", first_name="Ada", last_name="Okafor")
-doctor_profile = DoctorProfile.objects.create(
-    user=doctor_user,
-    specialty=specialty,
-    clinic=clinic,
-    bio="Family physician providing compassionate care.",
-    fee=15000,
-    slot_length_minutes=30,
-    is_active=True,
-)
-weekday = timezone.localdate().weekday()
-WeeklyAvailability.objects.get_or_create(
-    doctor=doctor_profile,
-    weekday=weekday,
-    start_time=time(9, 0),
-    end_time=time(12, 0),
-)
-exit()
-```
+**Demo accounts**
+
+| Role        | Username     | Password   |
+|-------------|--------------|------------|
+| Staff admin | `medadmin`   | `admin1234`|
+| Doctor      | `drstrange`  | `pass1234` |
+| Doctor      | `drhouse`    | `pass1234` |
+| Patient     | `patientjane`| `pass1234` |
+| Patient     | `patientjohn`| `pass1234` |
 
 ### 5. Run the development server
 
