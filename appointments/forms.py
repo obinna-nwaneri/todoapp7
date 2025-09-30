@@ -39,6 +39,35 @@ class TailwindPasswordChangeForm(TailwindFormMixin, PasswordChangeForm):
     pass
 
 
+class DoctorChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        profile = getattr(obj, "doctor_profile", None)
+        if profile:
+            parts = [f"Dr. {profile.full_name}"]
+            if profile.specialty:
+                parts.append(profile.specialty.name)
+            if profile.clinic:
+                parts.append(profile.clinic.city)
+            return " • ".join(parts)
+        return obj.get_full_name() or obj.username
+
+    def clean(self, value):
+        try:
+            return super().clean(value)
+        except forms.ValidationError as exc:
+            if value in self.empty_values:
+                raise
+            try:
+                profile = DoctorProfile.objects.select_related("user").get(
+                    pk=value, is_active=True
+                )
+            except DoctorProfile.DoesNotExist:
+                raise exc
+            if profile.user not in self.queryset:
+                raise exc
+            return profile.user
+
+
 class UserRegistrationForm(TailwindFormMixin, UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -96,8 +125,9 @@ AvailabilityFormSet = forms.inlineformset_factory(
 
 
 class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
-    doctor = forms.ModelChoiceField(
-        queryset=DoctorProfile.objects.filter(is_active=True),
+    doctor = DoctorChoiceField(
+        queryset=User.objects.filter(doctor_profile__is_active=True)
+        .select_related("doctor_profile", "doctor_profile__specialty", "doctor_profile__clinic"),
         required=True,
         label="Doctor",
     )
@@ -134,27 +164,48 @@ class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
                 self.initial["date"],
             )
 
+    def _resolve_doctor_user(self, value):
+        if isinstance(value, User):
+            return value
+        queryset = self.fields["doctor"].queryset
+        user = queryset.filter(pk=value).first()
+        if user:
+            return user
+        try:
+            profile = DoctorProfile.objects.select_related("user").get(
+                pk=value, is_active=True
+            )
+        except DoctorProfile.DoesNotExist:
+            return None
+        return profile.user if profile.user in queryset else None
+
     def _populate_slot_choices_from_data(self):
         try:
             doctor_id = int(self.data.get("doctor"))
-            doctor_profile = DoctorProfile.objects.get(pk=doctor_id, is_active=True)
+            doctor_user = self._resolve_doctor_user(doctor_id)
+            doctor_profile = getattr(doctor_user, "doctor_profile", None)
             date_value = self.fields["date"].to_python(self.data.get("date"))
             if date_value:
-                self._populate_slot_choices(doctor_profile, date_value)
-        except (TypeError, ValueError, DoctorProfile.DoesNotExist):
+                self._populate_slot_choices(doctor_user, date_value)
+        except (TypeError, ValueError):
             pass
 
     def _populate_slot_choices(self, doctor, date_value):
         if isinstance(doctor, (int, str)):
-            try:
-                doctor = DoctorProfile.objects.get(pk=doctor, is_active=True)
-            except DoctorProfile.DoesNotExist:
-                return
+            doctor = self._resolve_doctor_user(doctor)
         if isinstance(date_value, str):
             date_value = self.fields["date"].to_python(date_value)
         if not doctor or not date_value:
             return
-        slots = generate_slots_for_doctor(doctor.user, date_value, weeks=0)
+        profile = getattr(doctor, "doctor_profile", None)
+        if not profile or not profile.is_active:
+            return
+        slots = generate_slots_for_doctor(
+            doctor,
+            date_value,
+            weeks=0,
+            skip_past=True,
+        )
         same_day_slots = [
             slot for slot in slots if timezone.localdate(slot[0]) == date_value
         ]
@@ -164,7 +215,8 @@ class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
                 f"{timezone.localtime(slot[0]):%I:%M %p} - {timezone.localtime(slot[1]):%I:%M %p}",
             )
             for slot in same_day_slots
-            if is_slot_available(doctor.user, slot[0], slot[1])
+            if slot[0] >= timezone.now()
+            and is_slot_available(doctor, slot[0], slot[1])
         ]
         self.fields["slot"].choices = choices
 
@@ -180,21 +232,25 @@ class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        doctor_profile: DoctorProfile | None = cleaned_data.get("doctor")
+        doctor_user: User | None = cleaned_data.get("doctor")
         slot_start: datetime | None = cleaned_data.get("slot")
-        if doctor_profile and slot_start:
+        if doctor_user and slot_start:
+            doctor_profile = getattr(doctor_user, "doctor_profile", None)
+            if not doctor_profile:
+                self.add_error("doctor", "Selected doctor is unavailable.")
+                return cleaned_data
             if timezone.is_naive(slot_start):
                 slot_start = timezone.make_aware(slot_start, timezone.get_current_timezone())
             slot_end = slot_start + timedelta(minutes=doctor_profile.slot_length_minutes)
-            if not is_slot_available(doctor_profile.user, slot_start, slot_end):
+            if not is_slot_available(doctor_user, slot_start, slot_end):
                 self.add_error("slot", "Selected slot is no longer available.")
             cleaned_data["slot_start"] = slot_start
             cleaned_data["slot_end"] = slot_end
             cleaned_data["doctor_profile"] = doctor_profile
-            cleaned_data["doctor"] = doctor_profile.user
+            cleaned_data["doctor"] = doctor_user
             self.instance.start = slot_start
             self.instance.end = slot_end
-            self.instance.doctor = doctor_profile.user
+            self.instance.doctor = doctor_user
             self.instance.patient = self.patient
         return cleaned_data
 

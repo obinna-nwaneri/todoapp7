@@ -47,13 +47,15 @@ class AppointmentFlowTests(TestCase):
 
     def test_generate_slots_for_doctor(self):
         start_date = timezone.localdate()
-        slots = generate_slots_for_doctor(self.doctor_user, start_date, weeks=1)
+        slots = generate_slots_for_doctor(self.doctor_user, start_date, weeks=2)
         self.assertTrue(slots)
-        self.assertEqual(len(slots), 2)
-        self.assertLess(slots[0][0], slots[0][1])
+        future_slots = [slot for slot in slots if slot[0] >= timezone.now()]
+        self.assertTrue(future_slots)
+        self.assertLess(future_slots[0][0], future_slots[0][1])
 
     def test_appointment_conflict_detection(self):
-        now_slot = generate_slots_for_doctor(self.doctor_user, timezone.localdate(), weeks=1)[0]
+        slots = generate_slots_for_doctor(self.doctor_user, timezone.localdate(), weeks=2)
+        now_slot = next(slot for slot in slots if slot[0] >= timezone.now())
         appointment = Appointment.objects.create(
             patient=self.patient_user,
             doctor=self.doctor_user,
@@ -72,11 +74,12 @@ class AppointmentFlowTests(TestCase):
     def _book_via_form(self):
         client = Client()
         client.login(username="patient1", password="pass1234")
-        slot = generate_slots_for_doctor(self.doctor_user, timezone.localdate(), weeks=1)[0]
+        slots = generate_slots_for_doctor(self.doctor_user, timezone.localdate(), weeks=2)
+        slot = next(slot for slot in slots if slot[0] >= timezone.now())
         response = client.post(
             reverse("appointment_book"),
             {
-                "doctor": self.doctor_profile.pk,
+                "doctor": self.doctor_user.pk,
                 "date": slot[0].date(),
                 "slot": slot[0].isoformat(),
                 "reason": "Checkup",

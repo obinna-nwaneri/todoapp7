@@ -142,7 +142,12 @@ class DoctorListView(ListView):
         if next_available:
             ids = []
             for doctor in qs:
-                slots = generate_slots_for_doctor(doctor.user, timezone.localdate(), weeks=2)
+                slots = generate_slots_for_doctor(
+                    doctor.user,
+                    timezone.localdate(),
+                    weeks=2,
+                    skip_past=True,
+                )
                 if slots:
                     ids.append(doctor.id)
             qs = qs.filter(id__in=ids)
@@ -168,7 +173,12 @@ class DoctorDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        slots = generate_slots_for_doctor(self.object.user, timezone.localdate(), weeks=4)
+        slots = generate_slots_for_doctor(
+            self.object.user,
+            timezone.localdate(),
+            weeks=4,
+            skip_past=True,
+        )
         context["upcoming_slots"] = slots[:10]
         return context
 

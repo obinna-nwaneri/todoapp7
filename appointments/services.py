@@ -26,6 +26,8 @@ def generate_slots_for_doctor(
     doctor: User | DoctorProfile,
     start_date: date,
     weeks: int = 4,
+    *,
+    skip_past: bool = False,
 ) -> List[Slot]:
     profile = _get_doctor_profile(doctor)
     if not profile or not profile.is_active:
@@ -38,6 +40,7 @@ def generate_slots_for_doctor(
         days = 1
     availabilities: Sequence[WeeklyAvailability] = profile.availabilities.all()
     slots: List[Slot] = []
+    now = timezone.now()
     for day_offset in range(days):
         day = start_date + timedelta(days=day_offset)
         weekday = day.weekday()
@@ -50,8 +53,10 @@ def generate_slots_for_doctor(
             current_start = start_dt
             while current_start + timedelta(minutes=slot_length) <= end_of_window:
                 current_end = current_start + timedelta(minutes=slot_length)
-                if current_start >= timezone.now():
-                    slots.append((current_start, current_end))
+                if skip_past and current_end <= now:
+                    current_start = current_end
+                    continue
+                slots.append((current_start, current_end))
                 current_start = current_end
     slots.sort()
     return slots
