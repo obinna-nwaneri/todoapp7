@@ -209,14 +209,22 @@ class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
         same_day_slots = [
             slot for slot in slots if timezone.localdate(slot[0]) == date_value
         ]
+        valid_slots = []
+        now = timezone.now()
+        for start, end in same_day_slots:
+            if start is None or end is None:
+                continue
+            if start < now:
+                continue
+            if not is_slot_available(doctor, start, end):
+                continue
+            valid_slots.append((start, end))
         choices = [
             (
-                slot[0].isoformat(),
-                f"{timezone.localtime(slot[0]):%I:%M %p} - {timezone.localtime(slot[1]):%I:%M %p}",
+                start.isoformat(),
+                f"{timezone.localtime(start):%I:%M %p} - {timezone.localtime(end):%I:%M %p}",
             )
-            for slot in same_day_slots
-            if slot[0] >= timezone.now()
-            and is_slot_available(doctor, slot[0], slot[1])
+            for start, end in valid_slots
         ]
         self.fields["slot"].choices = choices
 
