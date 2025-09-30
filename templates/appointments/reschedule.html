@@ -7,7 +7,7 @@
         {% csrf_token %}
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700">Select new slot</label>
-            {{ form.slot.as_widget(attrs={'class': 'mt-1 w-full border border-gray-300 rounded px-3 py-2'}) }}
+            {{ form.slot }}
             {% for error in form.slot.errors %}
                 <p class="text-sm text-red-500">{{ error }}</p>
             {% endfor %}

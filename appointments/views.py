@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeDoneView, PasswordChangeView
+from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView
 from django.db.models import Count, Q
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
@@ -22,6 +22,8 @@ from .forms import (
     AppointmentRequestForm,
     AppointmentRescheduleForm,
     AvailabilityFormSet,
+    TailwindAuthenticationForm,
+    TailwindPasswordChangeForm,
     UserRegistrationForm,
 )
 
@@ -49,6 +51,11 @@ class HomeView(TemplateView):
             .order_by("user__first_name")[:6]
         )
         return context
+
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+    form_class = TailwindAuthenticationForm
 
 
 class RegisterView(FormView):
@@ -217,6 +224,7 @@ class AppointmentCreateView(LoginRequiredMixin, FormView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["patient"] = self.request.user
+        kwargs["request"] = self.request
         if self.request.method == "GET" and (self.request.GET.get("doctor") or self.request.GET.get("date")):
             kwargs["data"] = self.request.GET
         return kwargs
@@ -238,6 +246,7 @@ class AppointmentCreateView(LoginRequiredMixin, FormView):
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = "registration/password_change_form.html"
     success_url = reverse_lazy("password_change_done")
+    form_class = TailwindPasswordChangeForm
 
     def form_valid(self, form):
         response = super().form_valid(form)

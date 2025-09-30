@@ -10,7 +10,7 @@
             {% for field in form %}
                 <div>
                     <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-                    {{ field.as_widget(attrs={'class': 'mt-1 w-full border border-gray-300 rounded px-3 py-2'}) }}
+                    {{ field }}
                     {% if field.help_text %}
                         <p class="text-xs text-gray-500">{{ field.help_text }}</p>
                     {% endif %}

@@ -13,10 +13,18 @@
                         <h2 class="text-sm text-gray-500">Slot #{{ forloop.counter }}</h2>
                     {% endif %}
                     <div class="grid md:grid-cols-4 gap-4">
-                        {{ form.weekday.as_widget(attrs={'class': 'border border-gray-300 rounded px-3 py-2 md:col-span-1'}) }}
-                        {{ form.start_time.as_widget(attrs={'class': 'border border-gray-300 rounded px-3 py-2'}) }}
-                        {{ form.end_time.as_widget(attrs={'class': 'border border-gray-300 rounded px-3 py-2'}) }}
-                        {{ form.slot_length_minutes.as_widget(attrs={'class': 'border border-gray-300 rounded px-3 py-2'}) }}
+                        <div class="md:col-span-1">
+                            {{ form.weekday }}
+                        </div>
+                        <div>
+                            {{ form.start_time }}
+                        </div>
+                        <div>
+                            {{ form.end_time }}
+                        </div>
+                        <div>
+                            {{ form.slot_length_minutes }}
+                        </div>
                     </div>
                     {% if form.DELETE %}
                         <label class="inline-flex items-center space-x-2 text-sm text-red-500">

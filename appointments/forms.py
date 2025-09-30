@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, UserCreationForm
 from django.utils import timezone
 
 from .models import Appointment, DoctorProfile, PatientProfile, WeeklyAvailability
@@ -13,7 +13,33 @@ from .services import generate_slots_for_doctor, is_slot_available
 User = get_user_model()
 
 
-class UserRegistrationForm(UserCreationForm):
+class TailwindFormMixin:
+    """Mixin to apply Tailwind-friendly classes to form widgets."""
+
+    input_css_class = "mt-1 w-full border border-gray-300 rounded px-3 py-2"
+    checkbox_css_class = "h-4 w-4 text-indigo-600 border-gray-300 rounded"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            widget = field.widget
+            if isinstance(widget, forms.CheckboxInput):
+                css_class = self.checkbox_css_class
+            else:
+                css_class = self.input_css_class
+            existing = widget.attrs.get("class", "").strip()
+            widget.attrs["class"] = (f"{existing} {css_class}" if existing else css_class).strip()
+
+
+class TailwindAuthenticationForm(TailwindFormMixin, AuthenticationForm):
+    pass
+
+
+class TailwindPasswordChangeForm(TailwindFormMixin, PasswordChangeForm):
+    pass
+
+
+class UserRegistrationForm(TailwindFormMixin, UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
@@ -28,7 +54,7 @@ class UserRegistrationForm(UserCreationForm):
         return user
 
 
-class PatientProfileForm(forms.ModelForm):
+class PatientProfileForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = PatientProfile
         fields = ("phone", "dob", "gender", "address")
@@ -37,7 +63,7 @@ class PatientProfileForm(forms.ModelForm):
         }
 
 
-class DoctorProfileForm(forms.ModelForm):
+class DoctorProfileForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = DoctorProfile
         fields = (
@@ -50,7 +76,7 @@ class DoctorProfileForm(forms.ModelForm):
         )
 
 
-class AvailabilityForm(forms.ModelForm):
+class AvailabilityForm(TailwindFormMixin, forms.ModelForm):
     class Meta:
         model = WeeklyAvailability
         fields = ("weekday", "start_time", "end_time", "slot_length_minutes")
@@ -69,7 +95,7 @@ AvailabilityFormSet = forms.inlineformset_factory(
 )
 
 
-class AppointmentRequestForm(forms.ModelForm):
+class AppointmentRequestForm(TailwindFormMixin, forms.ModelForm):
     doctor = forms.ModelChoiceField(
         queryset=DoctorProfile.objects.filter(is_active=True),
         required=True,
@@ -85,9 +111,20 @@ class AppointmentRequestForm(forms.ModelForm):
             "reason": forms.Textarea(attrs={"rows": 3}),
         }
 
-    def __init__(self, *args, patient: User, **kwargs):
+    def __init__(self, *args, patient: User, request=None, **kwargs):
         self.patient = patient
+        self.request = request
         super().__init__(*args, **kwargs)
+        if self.request:
+            hx_attrs = {
+                "hx-get": self.request.path,
+                "hx-trigger": "change",
+                "hx-target": "#slot-container",
+                "hx-include": "[name='doctor'], [name='date']",
+                "hx-indicator": ".loading-indicator",
+            }
+            for field_name in ("doctor", "date"):
+                self.fields[field_name].widget.attrs.update(hx_attrs)
         self.fields["slot"].choices = []
         if "doctor" in self.data and "date" in self.data:
             self._populate_slot_choices_from_data()
@@ -177,7 +214,7 @@ class AppointmentRequestForm(forms.ModelForm):
         return appointment
 
 
-class AppointmentRescheduleForm(forms.ModelForm):
+class AppointmentRescheduleForm(TailwindFormMixin, forms.ModelForm):
     slot = forms.ChoiceField(label="New Time Slot")
 
     class Meta:
