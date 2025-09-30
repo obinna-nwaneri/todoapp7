@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import time, timedelta
+from datetime import datetime, time, timedelta
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
@@ -139,7 +139,7 @@ class Command(BaseCommand):
             ("patient_emeka", "Emeka", "Obi", "emeka.obi@example.com", "1990-05-05"),
         ]
         for username, first_name, last_name, email, dob in patient_data:
-            dob_value = timezone.datetime.strptime(dob, "%Y-%m-%d").date()
+            dob_value = datetime.strptime(dob, "%Y-%m-%d").date()
             user = self._create_user(username, first_name, last_name, email, Profile.Role.PATIENT, phone="08011111111")
             patient, _ = Patient.objects.get_or_create(user=user, defaults={"dob": dob_value})
             if patient.dob != dob_value:
