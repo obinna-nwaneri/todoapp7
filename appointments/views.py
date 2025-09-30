@@ -4,12 +4,17 @@ from datetime import date
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView
 from django.db.models import Count, Q
-from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseForbidden,
+    HttpResponseNotAllowed,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
@@ -56,6 +61,15 @@ class HomeView(TemplateView):
 class CustomLoginView(LoginView):
     template_name = "registration/login.html"
     form_class = TailwindAuthenticationForm
+
+
+@login_required
+def logout_view(request):
+    if request.method not in {"GET", "POST"}:
+        return HttpResponseNotAllowed(["GET", "POST"])
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect("home")
 
 
 class RegisterView(FormView):

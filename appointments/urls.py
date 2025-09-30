@@ -1,4 +1,3 @@
-from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
@@ -9,11 +8,7 @@ urlpatterns = [
     path("doctors/<str:username>/", views.DoctorDetailView.as_view(), name="doctor_detail"),
     path("accounts/register/", views.RegisterView.as_view(), name="register"),
     path("accounts/login/", views.CustomLoginView.as_view(), name="login"),
-    path(
-        "accounts/logout/",
-        auth_views.LogoutView.as_view(next_page="/"),
-        name="logout",
-    ),
+    path("accounts/logout/", views.logout_view, name="logout"),
     path(
         "accounts/password_change/",
         views.CustomPasswordChangeView.as_view(),
