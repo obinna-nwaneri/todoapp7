@@ -62,6 +62,7 @@ const Tasks = () => {
         <thead>
           <tr>
             <th>Title</th>
+            <th>Assigned To</th>
             <th>Due Date</th>
             <th>Priority</th>
             <th>Status</th>
@@ -73,6 +74,7 @@ const Tasks = () => {
           {filteredTasks.map((task) => (
             <tr key={task.id}>
               <td>{task.title}</td>
+              <td>{task.username || 'Unassigned'}</td>
               <td>{task.due_date ? new Date(task.due_date).toLocaleDateString() : '-'}</td>
               <td className={`priority-${task.priority.toLowerCase()}`}>{task.priority}</td>
               <td>

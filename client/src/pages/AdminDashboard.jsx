@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
@@ -30,18 +31,31 @@ const AdminDashboard = () => {
       {error && <div className="error">{error}</div>}
       {!summary && !error && <p>Loading summary...</p>}
       {summary && (
-        <div className="admin-summary">
-          <p><strong>Total Users:</strong> {summary.totalUsers}</p>
-          <p><strong>Total Tasks:</strong> {summary.totalTasks}</p>
-          <h3>Tasks by Status</h3>
-          <ul>
-            {summary.taskBreakdown.map((item) => (
-              <li key={item.status}>
-                {item.status}: {item.count}
+        <>
+          <div className="admin-summary">
+            <p><strong>Total Users:</strong> {summary.totalUsers}</p>
+            <p><strong>Total Tasks:</strong> {summary.totalTasks}</p>
+            <h3>Tasks by Status</h3>
+            <ul>
+              {summary.taskBreakdown.map((item) => (
+                <li key={item.status}>
+                  {item.status}: {item.count}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <nav className="admin-menu">
+            <h3>Admin Menu</h3>
+            <ul>
+              <li>
+                <Link to="/admin/tasks">Manage Tasks</Link>
               </li>
-            ))}
-          </ul>
-        </div>
+              <li>
+                <Link to="/admin/users">Manage Users</Link>
+              </li>
+            </ul>
+          </nav>
+        </>
       )}
     </div>
   );

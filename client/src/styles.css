@@ -219,3 +219,29 @@ table td {
 .admin-summary li {
   margin-bottom: 0.5rem;
 }
+
+.admin-menu {
+  margin-top: 2rem;
+}
+
+.admin-menu ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-menu a {
+  display: inline-block;
+  background-color: #2563eb;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.admin-menu a:hover {
+  background-color: #1d4ed8;
+}
