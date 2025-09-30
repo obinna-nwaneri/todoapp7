@@ -1,3 +1,4 @@
+{% load profile_extras %}
 <!DOCTYPE html>
 <html lang="en" x-data="{mobileOpen:false}">
 <head>
@@ -36,7 +37,7 @@
                 {% if user.is_authenticated %}
                     <a href="/me/appointments/" class="hover:text-indigo-600">My Appointments</a>
                     <a href="/accounts/password_change/" class="hover:text-indigo-600">Change Password</a>
-                    {% if user.doctor_profile %}
+                    {% if user|has_doctor_profile %}
                         <a href="/doctor/availability/" class="hover:text-indigo-600">My Availability</a>
                         <a href="/doctor/appointments/" class="hover:text-indigo-600">Doctor Appointments</a>
                     {% endif %}
@@ -56,7 +57,7 @@
                 {% if user.is_authenticated %}
                     <a href="/me/appointments/" class="block">My Appointments</a>
                     <a href="/accounts/password_change/" class="block">Change Password</a>
-                    {% if user.doctor_profile %}
+                    {% if user|has_doctor_profile %}
                         <a href="/doctor/availability/" class="block">My Availability</a>
                         <a href="/doctor/appointments/" class="block">Doctor Appointments</a>
                     {% endif %}
