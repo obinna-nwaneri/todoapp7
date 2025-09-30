@@ -7,14 +7,14 @@
         {% csrf_token %}
         <div>
             <label class="block text-sm font-medium text-gray-700">Doctor</label>
-            {{ form.doctor.as_widget(attrs={"class": "mt-1 w-full border border-gray-300 rounded px-3 py-2", "hx-get": request.path, "hx-trigger": "change", "hx-target": "#slot-container", "hx-include": "[name='doctor'], [name='date']", "hx-indicator": ".loading-indicator"}) }}
+            {{ form.doctor.as_widget(attrs={'class': 'mt-1 w-full border border-gray-300 rounded px-3 py-2', 'hx-get': request.path, 'hx-trigger': 'change', 'hx-target': '#slot-container', 'hx-include': "[name='doctor'], [name='date']", 'hx-indicator': '.loading-indicator'}) }}
             {% for error in form.doctor.errors %}
                 <p class="text-sm text-red-500">{{ error }}</p>
             {% endfor %}
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Date</label>
-            {{ form.date.as_widget(attrs={"class": "mt-1 w-full border border-gray-300 rounded px-3 py-2", "hx-get": request.path, "hx-trigger": "change", "hx-target": "#slot-container", "hx-include": "[name='doctor'], [name='date']", "hx-indicator": ".loading-indicator"}) }}
+            {{ form.date.as_widget(attrs={'class': 'mt-1 w-full border border-gray-300 rounded px-3 py-2', 'hx-get': request.path, 'hx-trigger': 'change', 'hx-target': '#slot-container', 'hx-include': "[name='doctor'], [name='date']", 'hx-indicator': '.loading-indicator'}) }}
             {% for error in form.date.errors %}
                 <p class="text-sm text-red-500">{{ error }}</p>
             {% endfor %}
@@ -24,7 +24,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Reason</label>
-            {{ form.reason.as_widget(attrs={"class": "mt-1 w-full border border-gray-300 rounded px-3 py-2"}) }}
+            {{ form.reason.as_widget(attrs={'class': 'mt-1 w-full border border-gray-300 rounded px-3 py-2'}) }}
             {% for error in form.reason.errors %}
                 <p class="text-sm text-red-500">{{ error }}</p>
             {% endfor %}
