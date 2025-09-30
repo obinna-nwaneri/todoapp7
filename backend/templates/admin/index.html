@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="dashboard">
+  <div class="dashboard-summary">
+    <div class="module">
+      <h2>{% trans "Overview" %}</h2>
+      <p><strong>{% trans "Total Users" %}:</strong> {{ total_users }}</p>
+      <p><strong>{% trans "Total Tasks" %}:</strong> {{ total_tasks }}</p>
+    </div>
+  </div>
+
+  {% if app_list %}
+  <div class="app-list">
+    {% for app in app_list %}
+      <div class="module">
+        <table>
+          <caption>
+            {{ app.name }}
+          </caption>
+          <tbody>
+            {% for model in app.models %}
+            <tr>
+              <th scope="row">{{ model.name }}</th>
+              <td>
+                {% if model.admin_url %}
+                <a href="{{ model.admin_url }}">{% trans "View" %}</a>
+                {% endif %}
+                {% if model.add_url %}
+                | <a href="{{ model.add_url }}">{% trans "Add" %}</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
