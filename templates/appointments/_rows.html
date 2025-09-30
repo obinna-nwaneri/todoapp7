@@ -1,0 +1,5 @@
+{% for appointment in appointments %}
+    {% include "appointments/_row.html" %}
+{% empty %}
+    <p class="text-gray-600">No appointments found.</p>
+{% endfor %}

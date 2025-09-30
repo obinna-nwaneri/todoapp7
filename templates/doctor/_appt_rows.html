@@ -1,0 +1,5 @@
+{% for appointment in appointments %}
+    {% include "doctor/_appt_row.html" %}
+{% empty %}
+    <p class="text-gray-600">No appointments scheduled.</p>
+{% endfor %}

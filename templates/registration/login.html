@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Login | MedBook{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-semibold mb-4">Sign in</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="space-y-4">
+            {% for field in form %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-xs text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-sm text-red-500">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="w-full mt-6 bg-indigo-600 text-white py-2 rounded">Login</button>
+    </form>
+    <p class="mt-4 text-sm text-gray-600">Need an account? <a href="{% url 'register' %}" class="text-indigo-600">Register</a></p>
+</div>
+{% endblock %}

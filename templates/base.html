@@ -1,0 +1,92 @@
+{% load profile_extras %}
+<!DOCTYPE html>
+<html lang="en" x-data="{mobileOpen:false}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    {% block extra_head %}{% endblock %}
+    <style>
+        .loading-indicator { display: none; align-items: center; justify-content: center; color: #4f46e5; }
+        .loading-indicator.htmx-request { display: flex; }
+    </style>
+    <title>{% block title %}MedBook{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
+            if (csrftoken) {
+                event.detail.headers['X-CSRFToken'] = csrftoken;
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="/" class="text-2xl font-bold text-indigo-600">MedBook</a>
+            <button class="md:hidden" @click="mobileOpen = !mobileOpen">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <nav class="hidden md:flex space-x-4 items-center text-sm font-medium text-gray-700">
+                <a href="/doctors/" class="hover:text-indigo-600">Doctors</a>
+                {% if user.is_authenticated %}
+                    <a href="/me/appointments/" class="hover:text-indigo-600">My Appointments</a>
+                    <a href="/accounts/password_change/" class="hover:text-indigo-600">Change Password</a>
+                    {% if user|has_doctor_profile %}
+                        <a href="/doctor/availability/" class="hover:text-indigo-600">My Availability</a>
+                        <a href="/doctor/appointments/" class="hover:text-indigo-600">Doctor Appointments</a>
+                    {% endif %}
+                    {% if user.is_staff %}
+                        <a href="/admin/dashboard/" class="hover:text-indigo-600">Admin Dashboard</a>
+                    {% endif %}
+                    <a href="/accounts/logout/" class="hover:text-red-500">Logout</a>
+                {% else %}
+                    <a href="/accounts/login/" class="hover:text-indigo-600">Login</a>
+                    <a href="/accounts/register/" class="hover:text-indigo-600">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div class="md:hidden" x-show="mobileOpen" x-transition>
+            <nav class="px-4 pb-4 space-y-2 text-gray-700 text-sm">
+                <a href="/doctors/" class="block">Doctors</a>
+                {% if user.is_authenticated %}
+                    <a href="/me/appointments/" class="block">My Appointments</a>
+                    <a href="/accounts/password_change/" class="block">Change Password</a>
+                    {% if user|has_doctor_profile %}
+                        <a href="/doctor/availability/" class="block">My Availability</a>
+                        <a href="/doctor/appointments/" class="block">Doctor Appointments</a>
+                    {% endif %}
+                    {% if user.is_staff %}
+                        <a href="/admin/dashboard/" class="block">Admin Dashboard</a>
+                    {% endif %}
+                    <a href="/accounts/logout/" class="block text-red-500">Logout</a>
+                {% else %}
+                    <a href="/accounts/login/" class="block">Login</a>
+                    <a href="/accounts/register/" class="block">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    <main class="flex-1 container mx-auto px-4 py-6">
+        {% if messages %}
+            <div class="space-y-2 mb-4">
+                {% for message in messages %}
+                    <div class="p-3 rounded shadow text-white {% if message.tags %}bg-{{ message.tags|default:'indigo' }}-500{% else %}bg-indigo-500{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-white py-4 text-center text-gray-500 text-sm">
+        &copy; {{ now|date:"Y" }} MedBook. All rights reserved.
+    </footer>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

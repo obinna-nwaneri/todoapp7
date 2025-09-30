@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment | MedBook{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-semibold mb-4">Book an appointment</h1>
+    <form method="post" class="space-y-4" hx-boost="false">
+        {% csrf_token %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Doctor</label>
+            {{ form.doctor }}
+            {% for error in form.doctor.errors %}
+                <p class="text-sm text-red-500">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Date</label>
+            {{ form.date }}
+            {% for error in form.date.errors %}
+                <p class="text-sm text-red-500">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div id="slot-container">
+            {% include "appointments/_slot_select.html" %}
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Reason</label>
+            {{ form.reason }}
+            {% for error in form.reason.errors %}
+                <p class="text-sm text-red-500">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded">Submit request</button>
+    </form>
+</div>
+{% endblock %}

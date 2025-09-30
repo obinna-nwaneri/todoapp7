@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}My Availability | MedBook{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-semibold mb-4">Weekly availability</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <div class="space-y-4">
+            {% for form in formset %}
+                <div class="border border-gray-200 rounded p-4 space-y-3">
+                    {% if form.instance.pk %}
+                        <h2 class="text-sm text-gray-500">Slot #{{ forloop.counter }}</h2>
+                    {% endif %}
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div class="md:col-span-1">
+                            {{ form.weekday }}
+                        </div>
+                        <div>
+                            {{ form.start_time }}
+                        </div>
+                        <div>
+                            {{ form.end_time }}
+                        </div>
+                        <div>
+                            {{ form.slot_length_minutes }}
+                        </div>
+                    </div>
+                    {% if form.DELETE %}
+                        <label class="inline-flex items-center space-x-2 text-sm text-red-500">
+                            {{ form.DELETE }}<span>Delete</span>
+                        </label>
+                    {% endif %}
+                    {% for error in form.non_field_errors %}
+                        <p class="text-sm text-red-500">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="mt-6 bg-indigo-600 text-white px-4 py-2 rounded">Save availability</button>
+    </form>
+</div>
+{% endblock %}

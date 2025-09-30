@@ -1,0 +1,11 @@
+<h2 class="text-lg font-semibold text-gray-900 mb-3">Today's schedule</h2>
+<ul class="space-y-2 text-sm text-gray-700">
+    {% for appointment in today_schedule %}
+        <li class="flex justify-between">
+            <span>{{ appointment.start|time:"g:i A" }} - {{ appointment.patient.get_full_name|default:appointment.patient.username }}</span>
+            <span class="capitalize">{{ appointment.status }}</span>
+        </li>
+    {% empty %}
+        <li>No appointments today.</li>
+    {% endfor %}
+</ul>
