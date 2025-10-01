@@ -1,0 +1,19 @@
+{% extends "dashboard_base.html" %}
+{% load crispy_forms_filters crispy_forms_tags %}
+{% block sidebar %}
+    <a href="{% url 'doctor:dashboard' %}" class="block px-3 py-2 rounded bg-white shadow">Overview</a>
+    <a href="{% url 'doctor:appointments' %}" class="block px-3 py-2 rounded bg-white shadow">Appointments</a>
+    <a href="{% url 'doctor:calendar' %}" class="block px-3 py-2 rounded bg-white shadow">Calendar</a>
+    <a href="{% url 'doctor:patients' %}" class="block px-3 py-2 rounded bg-white shadow">Patients</a>
+    <a href="{% url 'doctor:availability' %}" class="block px-3 py-2 rounded bg-white shadow">Availability</a>
+    <a href="{% url 'doctor:profile' %}" class="block px-3 py-2 rounded bg-indigo-600 text-white">Profile</a>
+{% endblock %}
+{% block dashboard_content %}
+<h1 class="text-2xl font-semibold mb-4">Doctor profile</h1>
+<form method="post" class="bg-white shadow rounded p-6 space-y-4">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="bg-indigo-600 text-white px-4 py-2 rounded">Save changes</button>
+</form>
+<p class="text-sm text-slate-500 mt-4">Verification status: {% if profile.verified %}<span class="text-emerald-600">Verified</span>{% else %}<span class="text-amber-600">Pending</span>{% endif %}</p>
+{% endblock %}

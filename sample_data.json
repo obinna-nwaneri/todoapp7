@@ -1,0 +1,1113 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "PATIENT",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "DOCTOR",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "ADMIN",
+    "permissions": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      25,
+      26,
+      27,
+      28,
+      1,
+      2,
+      3,
+      4,
+      9,
+      10,
+      11,
+      12,
+      5,
+      6,
+      7,
+      8,
+      13,
+      14,
+      15,
+      16,
+      21,
+      22,
+      23,
+      24,
+      17,
+      18,
+      19,
+      20
+    ]
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$1xEMsjvV7AV25pGTPnPckz$YoDF8BoRQJJVjt+P2JZWKEafkaJGqaMSeBVFOe1PYQo=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "System",
+    "last_name": "Admin",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:30.934Z",
+    "email": "admin@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$hWrilNwwow2azdwUCshQDE$QkqiAhwPCI4YaryTNHHgjDLD2SbXd9P4Tzz09fvpNxI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient1",
+    "first_name": "Patient1",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:31.603Z",
+    "email": "patient1@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$zUFPjGLIM94KECww6npFoO$otBLtRx/8ei22aXo0nM+OLtjAWSPvpa6KfOOa6wKrSs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient2",
+    "first_name": "Patient2",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:32.242Z",
+    "email": "patient2@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$jvKLD1fItVkFijL0QM0szE$teAN4JONeA/412IPu+MI6IR9n9mTcQ2OjsM16qw5NEc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient3",
+    "first_name": "Patient3",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:32.880Z",
+    "email": "patient3@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$875pTqdC3vLWmVkhdX0Otz$4RpZPzbtAGNIY7S25D16QcqvfP5RFJJYUqhV+5CrUsQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient4",
+    "first_name": "Patient4",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:33.506Z",
+    "email": "patient4@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$6V7Onf7YnDHTISAbjFlqnX$9mmblyEeQA7N2BP4uQTo/fa0Pqhaw5RVi+jbsJsMTZ0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient5",
+    "first_name": "Patient5",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:34.118Z",
+    "email": "patient5@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$A77tN9phSCX7EMw0TlBDZc$hSx5dHEHgYH02FL+8uxaF8X6fBSdrST2kNBdwv03+z0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient6",
+    "first_name": "Patient6",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:34.728Z",
+    "email": "patient6@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$ESyMxmxlUlXGrw5soRCSxT$ArIuvOv0HqYj+MbMB50KwkgdbYJnQtCVFaMOkkjcuqc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient7",
+    "first_name": "Patient7",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:35.336Z",
+    "email": "patient7@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$ciojmhuJYfyayEz4y5osSB$FTsvD/aeadGzW8fynEiqaVSTH4Ug9GZoAx4AqP4jr4Y=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "patient8",
+    "first_name": "Patient8",
+    "last_name": "Care",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:35.944Z",
+    "email": "patient8@example.com",
+    "phone": "",
+    "preferred_role": "PATIENT",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$1Z3Lp0VweFknAgMYTviF1W$xwIhhSqsqWdBBqBAP6IHv0OO8zJZwnwau6wYWyUMuAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "doctor1",
+    "first_name": "Doctor1",
+    "last_name": "Heal",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:36.564Z",
+    "email": "doctor1@example.com",
+    "phone": "",
+    "preferred_role": "DOCTOR",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$V0Ykbm29g1poOAgtXUdGVL$aEYidqvzGprmp1+k9A/QFZFCAlWluw9QKzH+x953fmM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "doctor2",
+    "first_name": "Doctor2",
+    "last_name": "Heal",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:37.179Z",
+    "email": "doctor2@example.com",
+    "phone": "",
+    "preferred_role": "DOCTOR",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$Mf2xiUoB9LJcgLK8bAllba$l1aZozi5aQS3TQPYWWfRU/1Ustgl/CxhM1SIo5pL5mA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "doctor3",
+    "first_name": "Doctor3",
+    "last_name": "Heal",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:37.840Z",
+    "email": "doctor3@example.com",
+    "phone": "",
+    "preferred_role": "DOCTOR",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$YqGvYmpgKRDQSx5gqnoEHU$OBunBYwvMUIO7N+/RDAxqsg+cGvsCro150eLP16y3Cg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "doctor4",
+    "first_name": "Doctor4",
+    "last_name": "Heal",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:38.466Z",
+    "email": "doctor4@example.com",
+    "phone": "",
+    "preferred_role": "DOCTOR",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$yYf68WKhE7JHSnVHvKPOdz$bkJaj7O0QXTg87F8qf++mJLj9DcnY5tp9GPbnHRMByA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "doctor5",
+    "first_name": "Doctor5",
+    "last_name": "Heal",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T06:44:39.124Z",
+    "email": "doctor5@example.com",
+    "phone": "",
+    "preferred_role": "DOCTOR",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "gender": "",
+    "dob": null,
+    "address": ""
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 6,
+  "fields": {
+    "user": 6,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 7,
+  "fields": {
+    "user": 7,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 8,
+  "fields": {
+    "user": 8,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 9,
+  "fields": {
+    "user": 9,
+    "gender": "",
+    "dob": null,
+    "address": "Lagos, Nigeria"
+  }
+},
+{
+  "model": "accounts.doctorprofile",
+  "pk": 1,
+  "fields": {
+    "user": 10,
+    "specialty": 1,
+    "years_experience": 6,
+    "location": "Victoria Island, Lagos",
+    "fee": "16000.00",
+    "bio": "Passionate about patient care and evidence-based medicine.",
+    "verified": true,
+    "rating": "4.50",
+    "available_for_virtual": true
+  }
+},
+{
+  "model": "accounts.doctorprofile",
+  "pk": 2,
+  "fields": {
+    "user": 11,
+    "specialty": 2,
+    "years_experience": 7,
+    "location": "Victoria Island, Lagos",
+    "fee": "17000.00",
+    "bio": "Passionate about patient care and evidence-based medicine.",
+    "verified": true,
+    "rating": "4.50",
+    "available_for_virtual": true
+  }
+},
+{
+  "model": "accounts.doctorprofile",
+  "pk": 3,
+  "fields": {
+    "user": 12,
+    "specialty": 3,
+    "years_experience": 8,
+    "location": "Victoria Island, Lagos",
+    "fee": "18000.00",
+    "bio": "Passionate about patient care and evidence-based medicine.",
+    "verified": true,
+    "rating": "4.50",
+    "available_for_virtual": true
+  }
+},
+{
+  "model": "accounts.doctorprofile",
+  "pk": 4,
+  "fields": {
+    "user": 13,
+    "specialty": 1,
+    "years_experience": 9,
+    "location": "Victoria Island, Lagos",
+    "fee": "19000.00",
+    "bio": "Passionate about patient care and evidence-based medicine.",
+    "verified": true,
+    "rating": "4.50",
+    "available_for_virtual": true
+  }
+},
+{
+  "model": "accounts.doctorprofile",
+  "pk": 5,
+  "fields": {
+    "user": 14,
+    "specialty": 2,
+    "years_experience": 10,
+    "location": "Victoria Island, Lagos",
+    "fee": "20000.00",
+    "bio": "Passionate about patient care and evidence-based medicine.",
+    "verified": true,
+    "rating": "4.50",
+    "available_for_virtual": true
+  }
+},
+{
+  "model": "directory.specialty",
+  "pk": 1,
+  "fields": {
+    "name": "Cardiology",
+    "description": "Heart and cardiovascular care",
+    "featured": true
+  }
+},
+{
+  "model": "directory.specialty",
+  "pk": 2,
+  "fields": {
+    "name": "Pediatrics",
+    "description": "Child health specialists",
+    "featured": true
+  }
+},
+{
+  "model": "directory.specialty",
+  "pk": 3,
+  "fields": {
+    "name": "Dermatology",
+    "description": "Skin health experts",
+    "featured": false
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 1,
+  "fields": {
+    "doctor": 10,
+    "day_of_week": 0,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 2,
+  "fields": {
+    "doctor": 10,
+    "day_of_week": 1,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 3,
+  "fields": {
+    "doctor": 10,
+    "day_of_week": 2,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 4,
+  "fields": {
+    "doctor": 10,
+    "day_of_week": 3,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 5,
+  "fields": {
+    "doctor": 10,
+    "day_of_week": 4,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 6,
+  "fields": {
+    "doctor": 11,
+    "day_of_week": 0,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 7,
+  "fields": {
+    "doctor": 11,
+    "day_of_week": 1,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 8,
+  "fields": {
+    "doctor": 11,
+    "day_of_week": 2,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 9,
+  "fields": {
+    "doctor": 11,
+    "day_of_week": 3,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 10,
+  "fields": {
+    "doctor": 11,
+    "day_of_week": 4,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 11,
+  "fields": {
+    "doctor": 12,
+    "day_of_week": 0,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 12,
+  "fields": {
+    "doctor": 12,
+    "day_of_week": 1,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 13,
+  "fields": {
+    "doctor": 12,
+    "day_of_week": 2,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 14,
+  "fields": {
+    "doctor": 12,
+    "day_of_week": 3,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 15,
+  "fields": {
+    "doctor": 12,
+    "day_of_week": 4,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 16,
+  "fields": {
+    "doctor": 13,
+    "day_of_week": 0,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 17,
+  "fields": {
+    "doctor": 13,
+    "day_of_week": 1,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 18,
+  "fields": {
+    "doctor": 13,
+    "day_of_week": 2,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 19,
+  "fields": {
+    "doctor": 13,
+    "day_of_week": 3,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 20,
+  "fields": {
+    "doctor": 13,
+    "day_of_week": 4,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 21,
+  "fields": {
+    "doctor": 14,
+    "day_of_week": 0,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 22,
+  "fields": {
+    "doctor": 14,
+    "day_of_week": 1,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 23,
+  "fields": {
+    "doctor": 14,
+    "day_of_week": 2,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 24,
+  "fields": {
+    "doctor": 14,
+    "day_of_week": 3,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.workinghours",
+  "pk": 25,
+  "fields": {
+    "doctor": 14,
+    "day_of_week": 4,
+    "start_time": "09:00:00",
+    "end_time": "17:00:00"
+  }
+},
+{
+  "model": "scheduling.timeoff",
+  "pk": 1,
+  "fields": {
+    "doctor": 10,
+    "start_datetime": "2025-10-04T15:44:39.913Z",
+    "end_datetime": "2025-10-04T18:44:39.913Z",
+    "reason": "Conference"
+  }
+},
+{
+  "model": "scheduling.timeoff",
+  "pk": 2,
+  "fields": {
+    "doctor": 10,
+    "start_datetime": "2025-10-08T19:44:39.913Z",
+    "end_datetime": "2025-10-08T23:44:39.913Z",
+    "reason": "Personal"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 1,
+  "fields": {
+    "patient": 2,
+    "doctor": 10,
+    "start_datetime": "2025-09-27T10:00:00Z",
+    "end_datetime": "2025-09-27T10:30:00Z",
+    "type": "PHYSICAL",
+    "status": "PENDING",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.923Z",
+    "updated_at": "2025-10-01T06:44:39.923Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 2,
+  "fields": {
+    "patient": 3,
+    "doctor": 11,
+    "start_datetime": "2025-09-28T12:00:00Z",
+    "end_datetime": "2025-09-28T12:30:00Z",
+    "type": "VIRTUAL",
+    "status": "CONFIRMED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.930Z",
+    "updated_at": "2025-10-01T06:44:39.930Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 3,
+  "fields": {
+    "patient": 4,
+    "doctor": 12,
+    "start_datetime": "2025-09-29T14:00:00Z",
+    "end_datetime": "2025-09-29T14:30:00Z",
+    "type": "PHYSICAL",
+    "status": "CANCELLED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.936Z",
+    "updated_at": "2025-10-01T06:44:39.936Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 4,
+  "fields": {
+    "patient": 5,
+    "doctor": 13,
+    "start_datetime": "2025-09-30T16:00:00Z",
+    "end_datetime": "2025-09-30T16:30:00Z",
+    "type": "VIRTUAL",
+    "status": "COMPLETED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.942Z",
+    "updated_at": "2025-10-01T06:44:39.942Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 5,
+  "fields": {
+    "patient": 6,
+    "doctor": 14,
+    "start_datetime": "2025-10-01T10:00:00Z",
+    "end_datetime": "2025-10-01T10:30:00Z",
+    "type": "PHYSICAL",
+    "status": "NO_SHOW",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.949Z",
+    "updated_at": "2025-10-01T06:44:39.949Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 6,
+  "fields": {
+    "patient": 7,
+    "doctor": 10,
+    "start_datetime": "2025-10-02T12:00:00Z",
+    "end_datetime": "2025-10-02T12:30:00Z",
+    "type": "VIRTUAL",
+    "status": "PENDING",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.956Z",
+    "updated_at": "2025-10-01T06:44:39.956Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 7,
+  "fields": {
+    "patient": 8,
+    "doctor": 11,
+    "start_datetime": "2025-10-03T14:00:00Z",
+    "end_datetime": "2025-10-03T14:30:00Z",
+    "type": "PHYSICAL",
+    "status": "CONFIRMED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.961Z",
+    "updated_at": "2025-10-01T06:44:39.961Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 8,
+  "fields": {
+    "patient": 9,
+    "doctor": 12,
+    "start_datetime": "2025-10-04T16:00:00Z",
+    "end_datetime": "2025-10-04T16:30:00Z",
+    "type": "VIRTUAL",
+    "status": "CANCELLED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.966Z",
+    "updated_at": "2025-10-01T06:44:39.966Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 9,
+  "fields": {
+    "patient": 2,
+    "doctor": 13,
+    "start_datetime": "2025-10-05T10:00:00Z",
+    "end_datetime": "2025-10-05T10:30:00Z",
+    "type": "PHYSICAL",
+    "status": "COMPLETED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.972Z",
+    "updated_at": "2025-10-01T06:44:39.972Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 10,
+  "fields": {
+    "patient": 3,
+    "doctor": 14,
+    "start_datetime": "2025-10-06T12:00:00Z",
+    "end_datetime": "2025-10-06T12:30:00Z",
+    "type": "VIRTUAL",
+    "status": "NO_SHOW",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.977Z",
+    "updated_at": "2025-10-01T06:44:39.977Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 11,
+  "fields": {
+    "patient": 4,
+    "doctor": 10,
+    "start_datetime": "2025-10-07T14:00:00Z",
+    "end_datetime": "2025-10-07T14:30:00Z",
+    "type": "PHYSICAL",
+    "status": "PENDING",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.982Z",
+    "updated_at": "2025-10-01T06:44:39.982Z"
+  }
+},
+{
+  "model": "scheduling.appointment",
+  "pk": 12,
+  "fields": {
+    "patient": 5,
+    "doctor": 11,
+    "start_datetime": "2025-10-08T16:00:00Z",
+    "end_datetime": "2025-10-08T16:30:00Z",
+    "type": "VIRTUAL",
+    "status": "CONFIRMED",
+    "reason_text": "Follow-up consultation",
+    "notes": "",
+    "created_at": "2025-10-01T06:44:39.988Z",
+    "updated_at": "2025-10-01T06:44:39.988Z"
+  }
+},
+{
+  "model": "records.prescription",
+  "pk": 1,
+  "fields": {
+    "appointment": 4,
+    "doctor": 13,
+    "text": "Take one tablet daily after meals for 7 days.",
+    "file": "",
+    "created_at": "2025-10-01T06:44:39.991Z"
+  }
+},
+{
+  "model": "records.prescription",
+  "pk": 2,
+  "fields": {
+    "appointment": 9,
+    "doctor": 13,
+    "text": "Take one tablet daily after meals for 7 days.",
+    "file": "",
+    "created_at": "2025-10-01T06:44:39.994Z"
+  }
+},
+{
+  "model": "content.faq",
+  "pk": 1,
+  "fields": {
+    "question": "How do I book an appointment?",
+    "answer": "Search for a doctor and select an available slot.",
+    "ordering": 1
+  }
+},
+{
+  "model": "content.faq",
+  "pk": 2,
+  "fields": {
+    "question": "Can I reschedule appointments?",
+    "answer": "Yes, up to 2 hours before the scheduled time.",
+    "ordering": 2
+  }
+},
+{
+  "model": "content.cmspage",
+  "pk": 1,
+  "fields": {
+    "slug": "terms",
+    "title": "Terms of Service",
+    "content": "<p>These are the terms of service for using the Mediko platform.</p>"
+  }
+},
+{
+  "model": "content.cmspage",
+  "pk": 2,
+  "fields": {
+    "slug": "privacy",
+    "title": "Privacy Policy",
+    "content": "<p>We respect your privacy and secure your data.</p>"
+  }
+},
+{
+  "model": "content.announcement",
+  "pk": 1,
+  "fields": {
+    "title": "Welcome to Mediko",
+    "message": "We are excited to help you manage your healthcare journeys.",
+    "audience": "ALL",
+    "published_at": "2025-09-30T06:44:39.913Z"
+  }
+},
+{
+  "model": "content.announcement",
+  "pk": 2,
+  "fields": {
+    "title": "Flu vaccination reminder",
+    "message": "Patients are encouraged to schedule their annual flu shots.",
+    "audience": "PATIENTS",
+    "published_at": "2025-10-01T06:44:39.913Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "channel": "IN_APP",
+    "subject": "Appointment confirmed",
+    "body": "Your appointment has been confirmed by the doctor.",
+    "sent_at": null,
+    "created_at": "2025-10-01T06:44:40.011Z"
+  }
+}
+]

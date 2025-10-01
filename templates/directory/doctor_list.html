@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Find doctors{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-semibold mb-6">Find doctors</h1>
+<div class="grid md:grid-cols-4 gap-6">
+    <aside class="bg-white shadow rounded p-4 space-y-4">
+        <form hx-get="." hx-target="#doctor-results" hx-push-url="false" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase">Keyword</label>
+                <input type="text" name="q" value="{{ request.GET.q }}" class="w-full rounded border-slate-300" placeholder="Name or keyword" />
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase">Location</label>
+                <input type="text" name="location" value="{{ request.GET.location }}" class="w-full rounded border-slate-300" placeholder="Lagos" />
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 uppercase">Specialty</label>
+                <select name="specialty" class="w-full rounded border-slate-300">
+                    <option value="">All</option>
+                    {% for specialty in specialties %}
+                        <option value="{{ specialty.id }}" {% if request.GET.specialty == specialty.id|stringformat:'s' %}selected{% endif %}>{{ specialty.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="w-full bg-indigo-600 text-white py-2 rounded">Filter</button>
+        </form>
+    </aside>
+    <section class="md:col-span-3">
+        <div id="doctor-results">
+            {% include "directory/partials/doctor_results.html" %}
+        </div>
+    </section>
+</div>
+{% endblock %}

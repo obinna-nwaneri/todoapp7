@@ -1,0 +1,17 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div>
+        <h3 class="font-semibold">{{ appointment.start_datetime|date:"M d, H:i" }} with Dr. {{ appointment.doctor.get_full_name }}</h3>
+        <p class="text-sm text-slate-600">Status: {{ appointment.status }}</p>
+        <p class="text-xs text-slate-500">{{ appointment.type }} • {{ appointment.reason_text|default:"No reason provided" }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="{% url 'patient:appointment_detail' appointment.pk %}" class="text-indigo-600 text-sm">View</a>
+        {% if appointment.status in "PENDING CONFIRMED".split %}
+            <form hx-post="{% url 'patient:cancel' appointment.pk %}" hx-target="#appointment-{{ appointment.pk }}" hx-swap="outerHTML">
+                {% csrf_token %}
+                <button class="text-sm text-red-600">Cancel</button>
+            </form>
+            <a href="{% url 'patient:reschedule' appointment.pk %}" class="text-sm text-slate-600">Reschedule</a>
+        {% endif %}
+    </div>
+</div>

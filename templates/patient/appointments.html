@@ -1,0 +1,19 @@
+{% extends "dashboard_base.html" %}
+{% block sidebar %}
+    <a href="{% url 'patient:dashboard' %}" class="block px-3 py-2 rounded bg-white shadow">Overview</a>
+    <a href="{% url 'patient:appointments' %}" class="block px-3 py-2 rounded bg-indigo-600 text-white">Appointments</a>
+    <a href="{% url 'patient:records' %}" class="block px-3 py-2 rounded bg-white shadow">Records</a>
+    <a href="{% url 'patient:profile' %}" class="block px-3 py-2 rounded bg-white shadow">Profile</a>
+{% endblock %}
+{% block dashboard_content %}
+<h1 class="text-2xl font-semibold mb-4">Appointments</h1>
+<div class="space-y-3">
+    {% for appointment in appointments %}
+        <div id="appointment-{{ appointment.pk }}" class="bg-white shadow rounded p-4" hx-target="this" hx-swap="outerHTML">
+            {% include "patient/partials/appointment_row.html" with appointment=appointment %}
+        </div>
+    {% empty %}
+        <p class="text-slate-600">No appointments yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

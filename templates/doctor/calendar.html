@@ -1,0 +1,27 @@
+{% extends "dashboard_base.html" %}
+{% block sidebar %}
+    <a href="{% url 'doctor:dashboard' %}" class="block px-3 py-2 rounded bg-white shadow">Overview</a>
+    <a href="{% url 'doctor:appointments' %}" class="block px-3 py-2 rounded bg-white shadow">Appointments</a>
+    <a href="{% url 'doctor:calendar' %}" class="block px-3 py-2 rounded bg-indigo-600 text-white">Calendar</a>
+    <a href="{% url 'doctor:patients' %}" class="block px-3 py-2 rounded bg-white shadow">Patients</a>
+    <a href="{% url 'doctor:availability' %}" class="block px-3 py-2 rounded bg-white shadow">Availability</a>
+    <a href="{% url 'doctor:profile' %}" class="block px-3 py-2 rounded bg-white shadow">Profile</a>
+{% endblock %}
+{% block dashboard_content %}
+<h1 class="text-2xl font-semibold mb-4">Calendar</h1>
+<form method="get" class="mb-4">
+    <label class="text-sm font-medium">Select day</label>
+    <input type="date" name="day" value="{{ day|date:'Y-m-d' }}" class="border rounded px-3 py-1" />
+    <button class="px-3 py-1 bg-indigo-600 text-white rounded">Go</button>
+</form>
+<div class="space-y-3">
+    {% for appointment in appointments %}
+        <div class="bg-white shadow rounded p-4">
+            <h3 class="font-semibold">{{ appointment.start_datetime|date:"H:i" }} - {{ appointment.patient.get_full_name }}</h3>
+            <p class="text-sm text-slate-600">{{ appointment.status }}</p>
+        </div>
+    {% empty %}
+        <p class="text-slate-600">No appointments scheduled for this day.</p>
+    {% endfor %}
+</div>
+{% endblock %}
