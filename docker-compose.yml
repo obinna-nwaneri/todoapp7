@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: Docapp3
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  backend:
+    build: ./backend
+    command: npm run start:prod
+    env_file: ./backend/.env
+    environment:
+      PG_HOST: postgres
+    depends_on:
+      - postgres
+    ports:
+      - '4000:4000'
+  frontend:
+    build: ./frontend
+    command: npm run preview -- --host --port 5173
+    env_file: ./frontend/.env
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
+volumes:
+  postgres-data:
