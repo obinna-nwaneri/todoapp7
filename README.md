@@ -1,3 +1,5 @@
+Version 1
+
 # Enterprise Todo App
 
 Enterprise-grade task management stack featuring an AdonisJS + AdminJS backend, PostgreSQL persistence, and a React/Vite frontend dashboard.
