@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+backend/node_modules/
+frontend/node_modules/
+backend/build/
+frontend/dist/
+backend/.adonisrc.json
+backend/tmp/
+*.sqlite3
+npm-debug.log*
+.DS_Store
