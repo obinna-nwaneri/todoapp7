@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["@adonisjs/core"],
+    "baseUrl": "./",
+    "paths": {
+      "#app/*": ["app/*"],
+      "#config/*": ["config/*"],
+      "#start/*": ["start/*"],
+      "#database/*": ["database/*"]
+    },
+    "outDir": "build",
+    "rootDir": "./",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "app",
+    "config",
+    "contracts",
+    "database",
+    "start",
+    "env.ts"
+  ]
+}

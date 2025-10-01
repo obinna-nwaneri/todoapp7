@@ -1,0 +1,26 @@
+{
+  "typescript": true,
+  "commands": [
+    "./commands"
+  ],
+  "providers": [
+    "@adonisjs/core",
+    "@adonisjs/lucid",
+    "@adonisjs/auth",
+    "@adonisjs/session"
+  ],
+  "aceProviders": [
+    "@adonisjs/lucid/ace"
+  ],
+  "aliases": {
+    "App": "#app",
+    "Config": "#config",
+    "Database": "#database"
+  },
+  "metaFiles": [
+    {
+      "pattern": "public/**",
+      "reloadServer": false
+    }
+  ]
+}
