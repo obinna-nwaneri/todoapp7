@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum AuditEntityType {
+  USER
+  PROJECT
+  TASK
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  role          Role
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  ownedProjects Project[] @relation("OwnerProjects")
+  tasksAssigned Task[]    @relation("TaskAssignee")
+  tasksCreated  Task[]    @relation("TaskCreator")
+  auditLogs     AuditLog[] @relation("AuditActor")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  ownerId     String
+  owner       User     @relation("OwnerProjects", fields: [ownerId], references: [id])
+  tasks       Task[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id            String      @id @default(uuid())
+  projectId     String
+  project       Project     @relation(fields: [projectId], references: [id])
+  title         String
+  description   String
+  priority      TaskPriority
+  status        TaskStatus
+  dueDate       DateTime?
+  assignedToId  String?
+  assignedTo    User?       @relation("TaskAssignee", fields: [assignedToId], references: [id])
+  createdById   String
+  createdBy     User        @relation("TaskCreator", fields: [createdById], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([projectId])
+  @@index([assignedToId])
+  @@index([status, priority])
+}
+
+model AuditLog {
+  id         String          @id @default(uuid())
+  actorId    String
+  actor      User            @relation("AuditActor", fields: [actorId], references: [id])
+  entityType AuditEntityType
+  entityId   String
+  action     AuditAction
+  meta       Json?
+  createdAt  DateTime @default(now())
+}
