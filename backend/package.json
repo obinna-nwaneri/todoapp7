@@ -1,0 +1,33 @@
+{
+  "name": "enterprise-todo-backend",
+  "version": "1.0.0",
+  "description": "Enterprise Todo backend built with AdonisJS v6",
+  "type": "module",
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production",
+    "lint": "eslint .",
+    "migration:run": "node ace migration:run",
+    "migration:refresh": "node ace migration:refresh",
+    "seed": "node ace db:seed"
+  },
+  "dependencies": {
+    "@adonisjs/auth": "^9.0.0",
+    "@adonisjs/bodyparser": "^8.0.0",
+    "@adonisjs/core": "^6.4.0",
+    "@adonisjs/lucid": "^21.4.0",
+    "@adonisjs/repl": "^4.0.0",
+    "@vinejs/vine": "^1.7.0",
+    "luxon": "^3.4.0",
+    "pg": "^8.11.0",
+    "reflect-metadata": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.4.0"
+  }
+}
