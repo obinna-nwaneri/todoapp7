@@ -1,0 +1,23 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { Fragment } from 'react';
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Link, NavLink } from 'react-router-dom';
+import clsx from 'clsx';
+import { useAuth } from '@/hooks/useAuth';
+const navigation = [
+    { name: 'Dashboard', to: '/' },
+    { name: 'New Todo', to: '/todos/new' },
+    { name: 'Profile', to: '/profile' },
+];
+const adminNavigation = [{ name: 'Admin', to: '/admin' }];
+const Navbar = () => {
+    const { user, isAdmin, logout } = useAuth();
+    const links = isAdmin ? [...navigation, ...adminNavigation] : navigation;
+    return (_jsx(Disclosure, { as: "nav", className: "bg-white shadow-sm border-b border-slate-200", children: ({ open }) => (_jsxs(_Fragment, { children: [_jsx("div", { className: "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8", children: _jsxs("div", { className: "flex h-16 items-center justify-between", children: [_jsxs("div", { className: "flex items-center", children: [_jsx(Link, { to: "/", className: "text-lg font-semibold text-primary-600", children: "Enterprise Todo" }), _jsx("div", { className: "hidden md:block ml-8", children: _jsxs("div", { className: "flex items-baseline space-x-4", children: [links.map((item) => (_jsx(NavLink, { to: item.to, className: ({ isActive }) => clsx('px-3 py-2 text-sm font-medium rounded-md transition-colors', isActive
+                                                        ? 'bg-primary-100 text-primary-700'
+                                                        : 'text-slate-600 hover:text-primary-700 hover:bg-primary-50'), children: item.name }, item.name))), isAdmin && (_jsx("a", { href: "/admin", className: "px-3 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-primary-700 hover:bg-primary-50", target: "_blank", rel: "noreferrer", children: "AdminJS" }))] }) })] }), _jsx("div", { className: "hidden md:block", children: _jsxs(Menu, { as: "div", className: "relative ml-3", children: [_jsx("div", { children: _jsx(Menu.Button, { className: "flex rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-400", children: _jsx("span", { children: user?.name }) }) }), _jsx(Transition, { as: Fragment, enter: "transition ease-out duration-100", enterFrom: "transform opacity-0 scale-95", enterTo: "transform opacity-100 scale-100", leave: "transition ease-in duration-75", leaveFrom: "transform opacity-100 scale-100", leaveTo: "transform opacity-0 scale-95", children: _jsxs(Menu.Items, { className: "absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none", children: [_jsx(Menu.Item, { children: ({ active }) => (_jsx(Link, { to: "/profile", className: clsx(active ? 'bg-slate-100' : '', 'block px-4 py-2 text-sm text-slate-700'), children: "Profile" })) }), _jsx(Menu.Item, { children: ({ active }) => (_jsx("button", { onClick: logout, className: clsx(active ? 'bg-slate-100' : '', 'block w-full px-4 py-2 text-left text-sm text-slate-700'), children: "Sign out" })) })] }) })] }) }), _jsx("div", { className: "-mr-2 flex md:hidden", children: _jsxs(Disclosure.Button, { className: "inline-flex items-center justify-center rounded-md p-2 text-slate-600 hover:bg-primary-50 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500", children: [_jsx("span", { className: "sr-only", children: "Open main menu" }), open ? (_jsx(XMarkIcon, { className: "block h-6 w-6", "aria-hidden": "true" })) : (_jsx(Bars3Icon, { className: "block h-6 w-6", "aria-hidden": "true" }))] }) })] }) }), _jsx(Disclosure.Panel, { className: "md:hidden", children: _jsxs("div", { className: "space-y-1 px-2 pb-3 pt-2", children: [links.map((item) => (_jsx(Disclosure.Button, { as: NavLink, to: item.to, className: ({ isActive }) => clsx(isActive
+                                    ? 'bg-primary-100 text-primary-700'
+                                    : 'text-slate-700 hover:bg-primary-50 hover:text-primary-700', 'block rounded-md px-3 py-2 text-base font-medium'), children: item.name }, item.name))), isAdmin && (_jsx("a", { href: "/admin", target: "_blank", rel: "noreferrer", className: "block rounded-md px-3 py-2 text-base font-medium text-slate-700 hover:bg-primary-50 hover:text-primary-700", children: "AdminJS" })), _jsx("button", { onClick: logout, className: "block w-full rounded-md px-3 py-2 text-left text-base font-medium text-slate-700 hover:bg-primary-50 hover:text-primary-700", children: "Sign out" })] }) })] })) }));
+};
+export default Navbar;
