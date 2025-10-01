@@ -1,0 +1,19 @@
+{
+  "name": "enterprise-todo-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Enterprise To-Do application monorepo with NestJS backend and React frontend",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm --workspace backend run dev\" \"npm --workspace frontend run dev\"",
+    "build": "npm --workspace backend run build && npm --workspace frontend run build",
+    "start": "concurrently \"npm --workspace backend run start\" \"npm --workspace frontend run preview\"",
+    "lint": "npm --workspace frontend run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

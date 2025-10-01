@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": false
+  },
+  "exclude": ["test", "src/**/*.spec.ts", "src/**/*.e2e-spec.ts", "src/database/seed.ts"]
+}
