@@ -1,0 +1,270 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1f2933;
+  background-color: #f4f7fb;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #ffffff, #eef2f7);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: #1f2933;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.app-header a,
+.app-header .link-button {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  max-width: 400px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+.auth-card h2 {
+  margin-top: 0;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-card input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.auth-card button,
+.todo-form button,
+.todo-actions button {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-card button:disabled,
+.todo-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-card a {
+  color: #2563eb;
+}
+
+.alert {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+  }
+}
+
+.dashboard {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.panel .secondary,
+.todo-actions .danger,
+.todo-form .secondary {
+  background: #e2e8f0;
+  color: #1f2933;
+}
+
+.todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.todo-form .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.todo-form .form-row input,
+.todo-form .form-row textarea,
+.todo-form .form-row select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.todo-form .inline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.todo-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  background: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo-description {
+  margin: 0.75rem 0;
+  color: #475569;
+}
+
+.todo-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.todo-meta dt {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.todo-meta dd {
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.priority-high {
+  color: #b91c1c;
+}
+
+.priority-medium {
+  color: #b45309;
+}
+
+.priority-low {
+  color: #0f766e;
+}
+
+.status-completed {
+  border-left: 6px solid #16a34a;
+}
+
+.status-in-progress {
+  border-left: 6px solid #f59e0b;
+}
+
+.status-pending {
+  border-left: 6px solid #3b82f6;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}
