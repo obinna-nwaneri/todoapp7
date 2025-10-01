@@ -1,0 +1,114 @@
+[
+  {
+    "model": "appointments.doctor",
+    "pk": 1,
+    "fields": {
+      "name": "Dr. John Smith",
+      "specialization": "Cardiologist",
+      "email": "john@example.com",
+      "phone": "0801111111"
+    }
+  },
+  {
+    "model": "appointments.doctor",
+    "pk": 2,
+    "fields": {
+      "name": "Dr. Mary Jones",
+      "specialization": "Dermatologist",
+      "email": "mary@example.com",
+      "phone": "0802222222"
+    }
+  },
+  {
+    "model": "appointments.doctor",
+    "pk": 3,
+    "fields": {
+      "name": "Dr. Alan White",
+      "specialization": "Pediatrician",
+      "email": "alan@example.com",
+      "phone": "0803333333"
+    }
+  },
+  {
+    "model": "appointments.patient",
+    "pk": 1,
+    "fields": {
+      "name": "Jane Doe",
+      "email": "jane@example.com",
+      "phone": "0804444444"
+    }
+  },
+  {
+    "model": "appointments.patient",
+    "pk": 2,
+    "fields": {
+      "name": "Michael Brown",
+      "email": "michael@example.com",
+      "phone": "0805555555"
+    }
+  },
+  {
+    "model": "appointments.patient",
+    "pk": 3,
+    "fields": {
+      "name": "Sarah Lee",
+      "email": "sarah@example.com",
+      "phone": "0806666666"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 1,
+    "fields": {
+      "doctor": 1,
+      "patient": 1,
+      "date": "2025-10-02",
+      "time": "10:00:00",
+      "status": "Scheduled"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 2,
+    "fields": {
+      "doctor": 2,
+      "patient": 2,
+      "date": "2025-10-03",
+      "time": "11:30:00",
+      "status": "Scheduled"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 3,
+    "fields": {
+      "doctor": 3,
+      "patient": 3,
+      "date": "2025-10-04",
+      "time": "09:00:00",
+      "status": "Completed"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 4,
+    "fields": {
+      "doctor": 2,
+      "patient": 1,
+      "date": "2025-10-05",
+      "time": "15:00:00",
+      "status": "Cancelled"
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 5,
+    "fields": {
+      "doctor": 3,
+      "patient": 2,
+      "date": "2025-10-06",
+      "time": "12:00:00",
+      "status": "Scheduled"
+    }
+  }
+]
