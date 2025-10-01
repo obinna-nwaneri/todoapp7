@@ -1,0 +1,32 @@
+{
+  "name": "enterprise-todo-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"**/*.{ts,js,json}\"",
+    "seed": "node ace db:seed"
+  },
+  "dependencies": {
+    "@adonisjs/auth": "^9.0.0",
+    "@adonisjs/core": "^6.0.0",
+    "@adonisjs/lucid": "^20.0.0",
+    "@adminjs/express": "^6.2.0",
+    "adminjs": "^7.0.0",
+    "luxon": "^3.0.0",
+    "pg": "^8.11.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^6.0.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-adonis": "^3.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  }
+}
