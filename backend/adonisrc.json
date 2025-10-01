@@ -1,0 +1,21 @@
+{
+  "typescript": true,
+  "commands": [
+    "@adonisjs/core/build/commands",
+    "@adonisjs/lucid/build/commands"
+  ],
+  "providers": [
+    "@adonisjs/core",
+    "@adonisjs/lucid"
+  ],
+  "metaFiles": [
+    "public/**",
+    "resources/views/**"
+  ],
+  "aliases": {
+    "App": "app",
+    "Config": "config",
+    "Database": "database",
+    "Contracts": "contracts"
+  }
+}

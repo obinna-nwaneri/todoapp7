@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+import { IgnitorFactory } from '@adonisjs/core/factories'
+import { fileURLToPath } from 'node:url'
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
+const kernel = IgnitorFactory.create(fileURLToPath(new URL('.', import.meta.url))).kernel('ace')
+await kernel.handle(process.argv.splice(2))
