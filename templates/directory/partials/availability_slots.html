@@ -1,0 +1,14 @@
+<div class="space-y-2">
+    {% if slots %}
+        {% for slot in slots %}
+            <div class="p-3 border rounded text-sm flex justify-between items-center">
+                <span>{{ slot.label }}</span>
+                {% if user.is_authenticated and user.is_patient %}
+                    <a href="{% url 'patient:book' doctor.pk %}?date={{ slot.start|date:'Y-m-d' }}" class="text-indigo-600">Book</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-sm text-slate-500">No available slots for the selected date.</p>
+    {% endif %}
+</div>

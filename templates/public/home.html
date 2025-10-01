@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Find a doctor - Mediko{% endblock %}
+{% block content %}
+<section class="grid md:grid-cols-2 gap-8 items-center">
+    <div class="space-y-4">
+        <h1 class="text-4xl font-bold">Book trusted doctors in minutes</h1>
+        <p class="text-lg text-slate-600">Search for vetted specialists, choose a convenient slot, and manage your medical history all in one place.</p>
+        <div class="flex space-x-3">
+            <a href="{% url 'directory:doctor_list' %}" class="px-4 py-2 bg-indigo-600 text-white rounded">Find doctors</a>
+            <a href="{% url 'accounts:register_patient' %}" class="px-4 py-2 border border-indigo-600 text-indigo-600 rounded">Create patient account</a>
+        </div>
+    </div>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form hx-get="{% url 'directory:doctor_list' %}" hx-target="#search-results" hx-push-url="false" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-slate-600">Doctor or specialty</label>
+                <input name="q" type="text" class="mt-1 w-full rounded border-slate-300" placeholder="Cardiologist" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-600">Location</label>
+                <input name="location" type="text" class="mt-1 w-full rounded border-slate-300" placeholder="Lagos" />
+            </div>
+            <button class="w-full bg-indigo-600 text-white rounded py-2">Search</button>
+        </form>
+    </div>
+</section>
+<section class="mt-12">
+    <h2 class="text-2xl font-semibold mb-4">Featured specialties</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+        {% for specialty in featured_specialties %}
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="text-lg font-bold">{{ specialty.name }}</h3>
+                <p class="text-sm text-slate-600">{{ specialty.description|truncatewords:20 }}</p>
+            </div>
+        {% empty %}
+            <p class="text-slate-600">No specialties available yet.</p>
+        {% endfor %}
+    </div>
+</section>
+<section class="mt-12">
+    <h2 class="text-2xl font-semibold mb-4">Top rated doctors</h2>
+    <div class="grid md:grid-cols-4 gap-6" id="search-results">
+        {% for profile in top_doctors %}
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-semibold">Dr. {{ profile.user.get_full_name }}</h3>
+                <p class="text-sm text-slate-600">{{ profile.specialty.name }}</p>
+                <p class="text-xs text-slate-500">{{ profile.location }}</p>
+                <a href="{% url 'directory:doctor_detail' profile.pk %}" class="text-indigo-600 text-sm">View profile</a>
+            </div>
+        {% empty %}
+            <p class="text-slate-600">We are onboarding doctors. Check back soon!</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

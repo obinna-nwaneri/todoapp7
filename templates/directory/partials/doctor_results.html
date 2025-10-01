@@ -1,0 +1,30 @@
+<div class="grid gap-4">
+    {% for doctor in doctors %}
+        <div class="bg-white rounded shadow p-4 flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-semibold">Dr. {{ doctor.user.get_full_name }}</h3>
+                <p class="text-sm text-slate-600">{{ doctor.specialty.name }} • {{ doctor.location }}</p>
+                <p class="text-xs text-slate-500">Consultation fee ₦{{ doctor.fee }}</p>
+            </div>
+            <div class="text-right space-y-2">
+                <a href="{% url 'directory:doctor_detail' doctor.pk %}" class="text-indigo-600 text-sm">View profile</a>
+                {% if user.is_authenticated and user.is_patient %}
+                <a href="{% url 'patient:book' doctor.user_id %}" class="block text-sm px-3 py-1 bg-indigo-600 text-white rounded">Book</a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-slate-600">No doctors match your filters.</p>
+    {% endfor %}
+    {% if is_paginated %}
+        <div class="flex justify-between items-center text-sm">
+            {% if page_obj.has_previous %}
+                <a hx-get="?page={{ page_obj.previous_page_number }}" hx-target="#doctor-results" class="text-indigo-600">Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a hx-get="?page={{ page_obj.next_page_number }}" hx-target="#doctor-results" class="text-indigo-600">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

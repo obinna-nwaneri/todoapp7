@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}FAQs{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-semibold mb-6">Frequently asked questions</h1>
+<div class="space-y-4">
+    {% for faq in faqs %}
+        <div class="bg-white shadow rounded p-4">
+            <h2 class="text-lg font-semibold">{{ faq.question }}</h2>
+            <p class="text-sm text-slate-600">{{ faq.answer }}</p>
+        </div>
+    {% empty %}
+        <p class="text-slate-600">No FAQs yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

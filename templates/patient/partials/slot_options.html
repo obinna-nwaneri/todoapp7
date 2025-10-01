@@ -1,0 +1,9 @@
+<div class="space-y-2">
+    {% if slots %}
+        {% for slot in slots %}
+            <button type="button" data-slot-start="{{ slot.start|date:'c' }}" class="w-full border rounded py-2 text-sm">{{ slot.label }}</button>
+        {% endfor %}
+    {% else %}
+        <p class="text-sm text-slate-500">No slots available. Try another date.</p>
+    {% endif %}
+</div>

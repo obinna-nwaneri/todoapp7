@@ -1,0 +1,33 @@
+{% extends "dashboard_base.html" %}
+{% block sidebar %}
+    <a href="{% url 'patient:dashboard' %}" class="block px-3 py-2 rounded bg-white shadow">Overview</a>
+    <a href="{% url 'patient:appointments' %}" class="block px-3 py-2 rounded bg-indigo-600 text-white">Appointments</a>
+    <a href="{% url 'patient:records' %}" class="block px-3 py-2 rounded bg-white shadow">Records</a>
+    <a href="{% url 'patient:profile' %}" class="block px-3 py-2 rounded bg-white shadow">Profile</a>
+{% endblock %}
+{% block dashboard_content %}
+<h1 class="text-2xl font-semibold mb-4">Reschedule appointment</h1>
+<p class="mb-4 text-sm text-slate-600">Current slot: {{ appointment.start_datetime|date:"M d, Y H:i" }} with Dr. {{ appointment.doctor.get_full_name }}</p>
+<form method="post" class="space-y-4" id="reschedule-form">
+    {% csrf_token %}
+    {{ form.new_start }}
+    <div class="grid md:grid-cols-2 gap-3" id="reschedule-slots">
+        {% for slot in slots %}
+            <button type="button" data-slot-start="{{ slot.start|date:'c' }}" class="border rounded py-2 text-sm">{{ slot.label }}</button>
+        {% empty %}
+            <p class="text-sm text-slate-500">No alternative slots available.</p>
+        {% endfor %}
+    </div>
+    <button class="px-4 py-2 bg-indigo-600 text-white rounded">Confirm reschedule</button>
+</form>
+<script>
+document.addEventListener('click', function(event) {
+    if(event.target.matches('#reschedule-slots [data-slot-start]')) {
+        const start = event.target.getAttribute('data-slot-start');
+        document.querySelector('#id_new_start').value = start;
+        document.querySelectorAll('#reschedule-slots [data-slot-start]').forEach(btn => btn.classList.remove('bg-indigo-600','text-white'));
+        event.target.classList.add('bg-indigo-600','text-white');
+    }
+});
+</script>
+{% endblock %}

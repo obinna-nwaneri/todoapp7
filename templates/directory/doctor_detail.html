@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dr. {{ doctor_profile.user.get_full_name }}{% endblock %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+    <section class="md:col-span-2 bg-white shadow rounded p-6 space-y-4">
+        <div>
+            <h1 class="text-3xl font-semibold">Dr. {{ doctor_profile.user.get_full_name }}</h1>
+            <p class="text-sm text-slate-600">{{ doctor_profile.specialty.name }} • {{ doctor_profile.location }}</p>
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold">About</h2>
+            <p class="text-sm text-slate-600 whitespace-pre-line">{{ doctor_profile.bio|default:"This doctor will update their bio soon." }}</p>
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold">Consultation fee</h2>
+            <p class="text-sm">₦{{ doctor_profile.fee }}</p>
+        </div>
+    </section>
+    <aside class="bg-white shadow rounded p-6 space-y-4">
+        <h2 class="text-lg font-semibold">Availability</h2>
+        <form hx-get="{% url 'directory:doctor_availability' doctor_profile.pk %}" hx-target="#availability" hx-trigger="change delay:200ms" class="space-y-2">
+            <label class="block text-sm font-medium">Choose date</label>
+            <input type="date" name="date" value="{{ today|date:'Y-m-d' }}" class="w-full border rounded" />
+        </form>
+        <div id="availability" class="space-y-2">
+            {% include "directory/partials/availability_slots.html" with slots=slots doctor=doctor_profile.user %}
+        </div>
+        {% if user.is_authenticated and user.is_patient %}
+        <a href="{% url 'patient:book' doctor_profile.user_id %}" class="block text-center bg-indigo-600 text-white rounded py-2">Book appointment</a>
+        {% else %}
+        <p class="text-sm text-slate-500">Login as a patient to book this doctor.</p>
+        {% endif %}
+    </aside>
+</div>
+{% endblock %}

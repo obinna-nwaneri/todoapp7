@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{mobileMenu:false}" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Mediko - Doctor Appointments{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        document.addEventListener('htmx:configRequest', function(event) {
+            const token = getCookie('csrftoken');
+            if (token) {
+                event.detail.headers['X-CSRFToken'] = token;
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    {% block head %}{% endblock %}
+</head>
+<body class="min-h-full bg-slate-50 text-slate-900">
+    <header class="bg-white shadow">
+        <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="text-2xl font-bold text-indigo-600">Mediko</a>
+            <nav class="hidden md:flex space-x-4 text-sm font-medium">
+                <a href="{% url 'home' %}" class="hover:text-indigo-600">Home</a>
+                <a href="{% url 'directory:doctor_list' %}" class="hover:text-indigo-600">Doctors</a>
+                <a href="{% url 'directory:specialty_list' %}" class="hover:text-indigo-600">Specialties</a>
+                <a href="{% url 'content:faqs' %}" class="hover:text-indigo-600">FAQs</a>
+                <a href="{% url 'content:announcements' %}" class="hover:text-indigo-600">Announcements</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <div class="relative" x-data="{open:false}">
+                        <button
+                            @click="open=!open"
+                            class="relative text-sm font-medium text-slate-600"
+                            hx-post="{% url 'notifications:mark_all_read' %}"
+                            hx-trigger="click"
+                            hx-swap="none"
+                        >
+                            🔔
+                            {% if request.unread_notification_count %}
+                            <span class="absolute -top-1 -right-2 text-xs bg-red-500 text-white rounded-full px-1">{{ request.unread_notification_count }}</span>
+                            {% endif %}
+                        </button>
+                        <div x-cloak x-show="open" @click.outside="open=false" class="absolute right-0 mt-2 w-64 bg-white shadow-xl rounded-md p-3 space-y-2">
+                            <h4 class="text-xs uppercase text-slate-500">Notifications</h4>
+                            {% for item in notifications %}
+                                <div class="text-sm border-b pb-2">{{ item.subject }}<p class="text-xs text-slate-500">{{ item.created_at|date:"M d, H:i" }}</p></div>
+                            {% empty %}
+                                <p class="text-sm text-slate-500">No notifications</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{% url 'dashboard' %}" class="px-3 py-1 text-sm bg-indigo-600 text-white rounded">Dashboard</a>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button class="text-sm text-slate-600 hover:text-indigo-600">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="text-sm text-indigo-600">Login</a>
+                    <a href="{% url 'accounts:register_patient' %}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    {% if messages %}
+    <div class="mx-auto max-w-4xl px-4 mt-4 space-y-2">
+        {% for message in messages %}
+            <div class="p-3 rounded border {{ message.tags|default:'info' }} bg-white shadow">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <main class="mx-auto max-w-6xl px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-slate-900 text-white py-6 mt-12">
+        <div class="mx-auto max-w-6xl px-4 text-sm flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+            <p>&copy; {% now "Y" %} Mediko Health</p>
+            <div class="space-x-4">
+                <a class="hover:underline" href="{% url 'content:page' slug='terms' %}">Terms</a>
+                <a class="hover:underline" href="{% url 'content:page' slug='privacy' %}">Privacy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

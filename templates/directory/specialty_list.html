@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Specialties{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-semibold mb-6">Medical specialties</h1>
+<div class="grid md:grid-cols-3 gap-6">
+    {% for specialty in specialties %}
+        <div class="bg-white shadow rounded p-4">
+            <h2 class="text-lg font-semibold">{{ specialty.name }}</h2>
+            <p class="text-sm text-slate-600">{{ specialty.description|default:"More details coming soon." }}</p>
+        </div>
+    {% empty %}
+        <p class="text-slate-600">Specialties will appear here once configured.</p>
+    {% endfor %}
+</div>
+{% endblock %}
