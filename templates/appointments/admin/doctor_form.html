@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load form_tags %}
+
+{% block title %}{{ doctor|default:'Create Doctor' }} | DocConnect{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-2xl space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-slate-800">{% if doctor %}Edit Doctor{% else %}Create Doctor{% endif %}</h1>
+        <a href="{% url 'admin_panel:doctor-list' %}" class="text-sm font-medium text-indigo-600">Back to list</a>
+    </div>
+    <form method="post" class="rounded-lg bg-white p-6 shadow space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label class="block text-sm font-medium text-slate-700" for="id_{{ field.name }}">{{ field.label }}</label>
+                {{ field|add_class:"mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" }}
+                {% if field.help_text %}<p class="mt-1 text-xs text-slate-500">{{ field.help_text }}</p>{% endif %}
+                {% for error in field.errors %}
+                    <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="flex justify-end gap-3">
+            <a href="{% url 'admin_panel:doctor-list' %}" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</a>
+            <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
