@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel Login · DocScheduler{% endblock %}
+{% block nav_links %}
+<a href="{% url 'home' %}" class="text-slate-600 hover:text-blue-600">Home</a>
+{% endblock %}
+{% block nav_links_mobile %}
+<a href="{% url 'home' %}" class="block text-slate-700">Home</a>
+{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow p-6">
+    <h1 class="text-2xl font-semibold text-slate-800 mb-4">Admin Access</h1>
+    <p class="text-sm text-slate-600 mb-6">Use your administrator credentials to manage doctors and appointments.</p>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                    <p class="text-xs text-red-600 mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="text-sm text-red-600">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <button type="submit" class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Login</button>
+    </form>
+</div>
+{% endblock %}

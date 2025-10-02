@@ -1,0 +1,22 @@
+<div class="space-y-3">
+    {% for doctor in doctors %}
+        <div class="border border-slate-200 rounded-md p-4 flex items-start justify-between">
+            <div>
+                <p class="font-semibold text-slate-700">{{ doctor.name }}</p>
+                <p class="text-sm text-slate-500">{{ doctor.specialization }}</p>
+                {% if doctor.availability_schedule %}
+                    <p class="text-xs text-slate-400 mt-2">{{ doctor.availability_schedule }}</p>
+                {% endif %}
+            </div>
+            <div class="space-x-2">
+                <button class="px-3 py-1 text-sm bg-slate-200 rounded" @click="showDoctorModal = true" hx-get="{% url 'doctor_update_form' doctor.pk %}" hx-target="#doctor-form-container" hx-swap="innerHTML">Edit</button>
+                <form method="post" hx-post="{% url 'doctor_delete' doctor.pk %}" hx-target="#doctor-table" hx-swap="outerHTML" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="px-3 py-1 text-sm bg-red-100 text-red-700 rounded" onclick="return confirm('Remove {{ doctor.name }}?')">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-slate-500">No doctors added yet.</p>
+    {% endfor %}
+</div>
