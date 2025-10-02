@@ -1,0 +1,17 @@
+<tr id="patient-appointment-{{ appointment.pk }}">
+    <td class="px-6 py-3 font-medium text-slate-800">{{ appointment.doctor.name }}</td>
+    <td class="px-6 py-3 text-slate-600">{{ appointment.date }} at {{ appointment.time }}</td>
+    <td class="px-6 py-3 text-slate-600">{{ appointment.symptoms|truncatechars:80 }}</td>
+    <td class="px-6 py-3">
+        {% include "components/status_badge.html" with status=appointment.status %}
+    </td>
+    <td class="px-6 py-3 text-right text-sm">
+        <div class="flex justify-end gap-3">
+            <a href="{% url 'patient_panel:appointment-edit' appointment.pk %}" class="text-indigo-600 hover:text-indigo-500">Edit</a>
+            <form hx-post="{% url 'patient_panel:appointment-delete' appointment.pk %}" hx-target="#patient-appointment-{{ appointment.pk }}" hx-swap="outerHTML" method="post" action="{% url 'patient_panel:appointment-delete' appointment.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="text-red-500 hover:text-red-600" onclick="return confirm('Cancel appointment?')">Cancel</button>
+            </form>
+        </div>
+    </td>
+</tr>
