@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Welcome · DocScheduler{% endblock %}
+{% block nav_links %}
+<a href="{% url 'login' %}" class="text-slate-600 hover:text-blue-600">Login</a>
+<a href="{% url 'register' %}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Register</a>
+{% endblock %}
+{% block nav_links_mobile %}
+<a href="{% url 'login' %}" class="block text-slate-700">Login</a>
+<a href="{% url 'register' %}" class="block text-slate-700">Register</a>
+{% endblock %}
+{% block content %}
+<div class="grid md:grid-cols-2 gap-8 items-center">
+    <div>
+        <h1 class="text-3xl font-bold text-slate-800 mb-4">Schedule your doctor visits with ease</h1>
+        <p class="text-slate-600 mb-6">DocScheduler helps patients book appointments, share symptoms, and stay on top of their healthcare journey. Administrators can manage doctor availability and review appointment requests in a single dashboard.</p>
+        <div class="flex space-x-4">
+            <a href="{% url 'register' %}" class="px-6 py-3 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">Create Account</a>
+            <a href="{% url 'login' %}" class="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50">Sign In</a>
+        </div>
+    </div>
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-700 mb-4">Why DocScheduler?</h2>
+        <ul class="space-y-3 text-slate-600">
+            <li class="flex items-start space-x-3"><i class="fa-solid fa-calendar-check text-blue-500 mt-1"></i><span>Book appointments with real-time feedback using HTMX for a seamless experience.</span></li>
+            <li class="flex items-start space-x-3"><i class="fa-solid fa-user-doctor text-blue-500 mt-1"></i><span>View doctor specialties and availability to find the perfect match.</span></li>
+            <li class="flex items-start space-x-3"><i class="fa-solid fa-lock text-blue-500 mt-1"></i><span>Secure account management with built-in authentication and profile controls.</span></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

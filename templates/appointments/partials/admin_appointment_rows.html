@@ -1,0 +1,7 @@
+{% if appointments %}
+    {% for appointment in appointments %}
+        {% include "appointments/partials/admin_appointment_row.html" with appointment=appointment %}
+    {% endfor %}
+{% else %}
+    <tr><td colspan="5" class="px-4 py-4 text-center text-slate-500">No appointments found.</td></tr>
+{% endif %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard · DocScheduler{% endblock %}
+{% block nav_links %}
+<a href="{% url 'admin_panel' %}" class="text-blue-600 font-semibold">Dashboard</a>
+<a href="{% url 'logout' %}" class="text-slate-600 hover:text-blue-600">Logout</a>
+{% endblock %}
+{% block nav_links_mobile %}
+<a href="{% url 'admin_panel' %}" class="block text-blue-600 font-semibold">Dashboard</a>
+<a href="{% url 'logout' %}" class="block text-slate-700">Logout</a>
+{% endblock %}
+{% block content %}
+<div class="space-y-6" x-data="{ showDoctorModal: false }" @doctorListChanged.window="showDoctorModal = false">
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white shadow rounded-lg p-6 md:col-span-1">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-slate-800">Doctors</h2>
+                <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded-md" @click="showDoctorModal = true" hx-get="{% url 'doctor_create_form' %}" hx-target="#doctor-form-container" hx-swap="innerHTML">Add</button>
+            </div>
+            <div id="doctor-table">
+                {% include "appointments/partials/doctor_list.html" with doctors=doctors %}
+            </div>
+        </div>
+        <div class="bg-white shadow rounded-lg p-6 md:col-span-2">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-800">Appointments</h2>
+                    <p class="text-sm text-slate-500">Approve or reject appointment requests without reloading.</p>
+                </div>
+                <button class="text-sm text-blue-600" hx-get="{% url 'admin_appointment_rows' %}" hx-target="#appointment-rows" hx-swap="innerHTML">Refresh</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-semibold text-slate-600">Patient</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold text-slate-600">Doctor</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold text-slate-600">Schedule</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold text-slate-600">Symptoms</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold text-slate-600">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointment-rows" class="bg-white divide-y divide-slate-200" hx-get="{% url 'admin_appointment_rows' %}" hx-trigger="appointmentListChanged from:body" hx-target="this" hx-swap="innerHTML">
+                        {% for appointment in appointments %}
+                            {% include "appointments/partials/admin_appointment_row.html" with appointment=appointment %}
+                        {% empty %}
+                            <tr><td colspan="5" class="px-4 py-4 text-center text-slate-500">No appointments found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-slate-800 mb-3">Patients</h2>
+        <div class="grid md:grid-cols-4 gap-3">
+            {% for patient in patients %}
+                <div class="border border-slate-200 rounded-md p-4 text-center">
+                    <p class="font-medium text-slate-700">{{ patient.username }}</p>
+                </div>
+            {% empty %}
+                <p class="text-slate-500">No patients registered.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div x-show="showDoctorModal" x-transition class="fixed inset-0 bg-slate-900 bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6" @click.away="showDoctorModal = false">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-slate-800">Doctor</h2>
+                <button class="text-slate-500" @click="showDoctorModal = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="doctor-form-container"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
