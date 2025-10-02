@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Doctors | DocConnect{% endblock %}
+
+{% block content %}
+<div class="space-y-6" x-data="{ search: '{{ query }}' }">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <h1 class="text-2xl font-semibold text-slate-800">Doctors</h1>
+        <a href="{% url 'admin_panel:doctor-create' %}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">Add doctor</a>
+    </div>
+    <div class="rounded-lg bg-white p-4 shadow">
+        <input type="search" name="q" x-model="search" hx-get="{% url 'admin_panel:doctor-list' %}" hx-trigger="keyup changed delay:300ms" hx-target="#doctor-results" hx-include="this" placeholder="Search by name or specialization" class="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" value="{{ query }}">
+    </div>
+    <div id="doctor-results">
+        {% include "appointments/admin/partials/doctor_table.html" %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<div class="overflow-x-auto rounded-lg bg-white shadow">
+    <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead class="bg-slate-50 text-left">
+            <tr>
+                <th class="px-6 py-3 font-semibold text-slate-600">Patient</th>
+                <th class="px-6 py-3 font-semibold text-slate-600">Doctor</th>
+                <th class="px-6 py-3 font-semibold text-slate-600">Date</th>
+                <th class="px-6 py-3 font-semibold text-slate-600">Status</th>
+                <th class="px-6 py-3"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 bg-white">
+            {% for appointment in appointments %}
+                <tr>
+                    <td class="px-6 py-3 font-medium text-slate-800">{{ appointment.patient.name }}</td>
+                    <td class="px-6 py-3 text-slate-600">{{ appointment.doctor.name }}</td>
+                    <td class="px-6 py-3 text-slate-600">{{ appointment.date }} at {{ appointment.time }}</td>
+                    <td class="px-6 py-3">
+                        {% include "components/status_badge.html" with status=appointment.status %}
+                    </td>
+                    <td class="px-6 py-3 text-right text-sm">
+                        <a href="{% url 'admin_panel:appointment-edit' appointment.pk %}" class="text-indigo-600 hover:text-indigo-500">Edit</a>
+                        <form action="{% url 'admin_panel:appointment-delete' appointment.pk %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="ml-3 text-red-500 hover:text-red-600" onclick="return confirm('Delete appointment?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-4 text-center text-slate-500">No appointments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

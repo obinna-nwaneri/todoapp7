@@ -1,0 +1,19 @@
+<tr id="appointment-{{ appointment.pk }}">
+    <td class="px-6 py-3 font-medium text-slate-800">{{ appointment.patient.name }}</td>
+    <td class="px-6 py-3 text-slate-600">{{ appointment.date }} at {{ appointment.time }}</td>
+    <td class="px-6 py-3 text-slate-600">{{ appointment.symptoms|truncatechars:80 }}</td>
+    <td class="px-6 py-3">
+        {% include "components/status_badge.html" with status=appointment.status %}
+    </td>
+    <td class="px-6 py-3 text-right text-sm">
+        <form hx-post="{% url 'doctor_panel:appointment-status' appointment.pk %}" hx-target="#appointment-{{ appointment.pk }}" hx-swap="outerHTML">
+            {% csrf_token %}
+            <select name="status" class="rounded-md border border-slate-300 px-2 py-1 text-xs focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" onchange="this.form.submit()">
+                <option value="pending" {% if appointment.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="approved" {% if appointment.status == 'approved' %}selected{% endif %}>Approved</option>
+                <option value="rejected" {% if appointment.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                <option value="completed" {% if appointment.status == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </form>
+    </td>
+</tr>
