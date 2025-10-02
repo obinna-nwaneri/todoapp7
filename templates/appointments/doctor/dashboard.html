@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard | DocConnect{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-semibold text-slate-800">Welcome, Dr. {{ doctor.name }}</h1>
+            <p class="text-sm text-slate-600">Specialization: {{ doctor.specialization }}</p>
+        </div>
+        <a href="{% url 'doctor_panel:appointments' %}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">Manage appointments</a>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-lg bg-white p-5 shadow">
+            <dt class="text-sm font-medium text-slate-500">Pending</dt>
+            <dd class="mt-2 text-2xl font-semibold text-slate-800">{{ stats.pending }}</dd>
+        </div>
+        <div class="rounded-lg bg-white p-5 shadow">
+            <dt class="text-sm font-medium text-slate-500">Approved</dt>
+            <dd class="mt-2 text-2xl font-semibold text-slate-800">{{ stats.approved }}</dd>
+        </div>
+        <div class="rounded-lg bg-white p-5 shadow">
+            <dt class="text-sm font-medium text-slate-500">Completed</dt>
+            <dd class="mt-2 text-2xl font-semibold text-slate-800">{{ stats.completed }}</dd>
+        </div>
+    </div>
+
+    <div class="rounded-lg bg-white shadow">
+        <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <h2 class="text-lg font-semibold text-slate-800">Upcoming appointments</h2>
+            <span class="text-sm text-slate-500">Next 10 scheduled</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                <thead class="bg-slate-50 text-left">
+                    <tr>
+                        <th class="px-6 py-3 font-semibold text-slate-600">Patient</th>
+                        <th class="px-6 py-3 font-semibold text-slate-600">Date</th>
+                        <th class="px-6 py-3 font-semibold text-slate-600">Symptoms</th>
+                        <th class="px-6 py-3 font-semibold text-slate-600">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    {% for appointment in upcoming %}
+                        <tr>
+                            <td class="px-6 py-3">{{ appointment.patient.name }}</td>
+                            <td class="px-6 py-3">{{ appointment.date }} at {{ appointment.time }}</td>
+                            <td class="px-6 py-3">{{ appointment.symptoms|truncatechars:60 }}</td>
+                            <td class="px-6 py-3">
+                                {% include "components/status_badge.html" with status=appointment.status %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-slate-500">No upcoming appointments.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

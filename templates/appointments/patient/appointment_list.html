@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load form_tags %}
+
+{% block title %}My Appointments | DocConnect{% endblock %}
+
+{% block content %}
+<div class="space-y-6" x-data="{ bookingOpen: false, search: '{{ query }}', status: '{{ status }}' }">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <h1 class="text-2xl font-semibold text-slate-800">My Appointments</h1>
+        <button type="button" @click="bookingOpen = !bookingOpen" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
+            <span x-text="bookingOpen ? 'Hide form' : 'Book appointment'"></span>
+        </button>
+    </div>
+
+    <div x-show="bookingOpen" x-cloak class="rounded-lg bg-white p-6 shadow">
+        <h2 class="text-lg font-semibold text-slate-800">Book a visit</h2>
+        <p class="mb-4 text-sm text-slate-600">Submit the form to instantly add a new appointment to the list.</p>
+        <div id="booking-errors" class="sm:col-span-2"></div>
+        <form hx-post="{% url 'patient_panel:appointment-create' %}" hx-target="#patient-appointment-rows" hx-swap="afterbegin" hx-on::after-request="if(event.detail.successful){ bookingOpen = false; document.getElementById('appointment-form').reset(); }" hx-on::before-request="document.getElementById('booking-errors').innerHTML = ''" hx-on::responseError="document.getElementById('booking-errors').innerHTML = event.detail.xhr.responseText" id="appointment-form" method="post" class="grid gap-4 sm:grid-cols-2">
+            {% csrf_token %}
+            <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-slate-700" for="id_doctor">Doctor</label>
+                {{ form.doctor|add_class:"mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700" for="id_date">Date</label>
+                {{ form.date|add_class:"mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700" for="id_time">Time</label>
+                {{ form.time|add_class:"mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" }}
+            </div>
+            <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-slate-700" for="id_symptoms">Symptoms</label>
+                {{ form.symptoms|add_class:"mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" }}
+            </div>
+            <div class="flex justify-end gap-3 sm:col-span-2">
+                <button type="button" @click="bookingOpen = false" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+                <button type="submit" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">Book now</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="grid gap-4 rounded-lg bg-white p-4 shadow sm:grid-cols-2">
+        <input type="hidden" name="partial" value="table">
+        <input type="search" name="q" x-model="search" hx-get="{% url 'patient_panel:appointments' %}" hx-vals='{"partial": "table"}' hx-trigger="keyup changed delay:300ms" hx-target="#patient-appointment-results" hx-include='[name='status'], input[name='partial']' placeholder="Search by doctor or symptoms" class="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" value="{{ query }}">
+        <select name="status" x-model="status" hx-get="{% url 'patient_panel:appointments' %}" hx-vals='{"partial": "table"}' hx-trigger="change" hx-target="#patient-appointment-results" hx-include='[name='q'], input[name='partial']' class="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+            <option value="">All statuses</option>
+            <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="approved" {% if status == 'approved' %}selected{% endif %}>Approved</option>
+            <option value="rejected" {% if status == 'rejected' %}selected{% endif %}>Rejected</option>
+            <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+    </div>
+    <div id="patient-appointment-results">
+        {% include "appointments/patient/partials/appointment_table.html" %}
+    </div>
+</div>
+{% endblock %}

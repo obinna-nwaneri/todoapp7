@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Appointments | DocConnect{% endblock %}
+
+{% block content %}
+<div class="space-y-6" x-data="{ search: '{{ query }}', status: '{{ status }}' }">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <h1 class="text-2xl font-semibold text-slate-800">Appointments</h1>
+        <a href="{% url 'admin_panel:appointment-create' %}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">Add appointment</a>
+    </div>
+    <div class="grid gap-4 rounded-lg bg-white p-4 shadow sm:grid-cols-2">
+        <input type="search" name="q" x-model="search" hx-get="{% url 'admin_panel:appointment-list' %}" hx-trigger="keyup changed delay:300ms" hx-target="#appointment-results" hx-include="this next [name='status']" placeholder="Search by patient, doctor or symptoms" class="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500" value="{{ query }}">
+        <select name="status" x-model="status" hx-get="{% url 'admin_panel:appointment-list' %}" hx-trigger="change" hx-target="#appointment-results" hx-include="[name='q'] this" class="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+            <option value="">All statuses</option>
+            <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="approved" {% if status == 'approved' %}selected{% endif %}>Approved</option>
+            <option value="rejected" {% if status == 'rejected' %}selected{% endif %}>Rejected</option>
+            <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+    </div>
+    <div id="appointment-results">
+        {% include "appointments/admin/partials/appointment_table.html" %}
+    </div>
+</div>
+{% endblock %}
